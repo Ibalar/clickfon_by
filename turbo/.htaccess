@@ -1,5 +1,5 @@
 AddType application/octet-stream csv
 AuthName "Turbo CMS"
 AuthType Basic
-AuthUserFile /home/clickfon/public_html/turbo/.passwd
+AuthUserFile D:/osp_6.3.5/home/clickfon.local/turbo/.passwd
 require valid-user
