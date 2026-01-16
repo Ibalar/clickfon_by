@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+		Paysera
+	</name>
+	<settings>
+		<variable>paysera_project_id</variable>
+		<name>{$lang->project_id}</name>
+	</settings>
+	<settings>
+		<variable>paysera_password</variable>
+		<name>{$lang->password}</name>
+	</settings>
+	<settings>
+		<variable>paysera_test_mode</variable>
+		<name>{$lang->test_mode}</name>
+		<options>
+			<name>{$lang->test}</name> 
+			<value>1</value>
+		</options>
+		<options>
+			<name>{$lang->real}</name>
+			<value>0</value>
+		</options>
+	</settings>
+</module>

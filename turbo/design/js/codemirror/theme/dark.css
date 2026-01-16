@@ -1,0 +1,48 @@
+.cm-s-dark.CodeMirror {font-family: monospace;}
+.cm-s-dark span.cm-meta {color: #569cd6}
+.cm-s-dark span.cm-number {color: #b5cea8}
+.cm-s-dark span.cm-keyword {line-height: 1em; font-weight: bold; color: #569cd6;}
+.cm-s-dark span.cm-def {color:#9cdcfe}
+.cm-s-dark span.cm-variable {color: #ddd6a3}
+.cm-s-dark span.cm-variable-2 {color: #9cdcfe}
+.cm-s-dark span.cm-variable-3,
+.cm-s-dark span.cm-type {color: #A9B7C6}
+.cm-s-dark span.cm-property {color: #9cdcfe}
+.cm-s-dark span.cm-operator {color: #d4d4d4}
+.cm-s-dark span.cm-string {color: #ce9178}
+.cm-s-dark span.cm-string-2 {color: #6A8759}
+.cm-s-dark span.cm-comment {color: #6A9955}
+.cm-s-dark span.cm-link {color: #287BDE}
+.cm-s-dark span.cm-atom {color: #569cd6}
+.cm-s-dark span.cm-error {color: #BC3F3C}
+.cm-s-dark span.cm-tag {color: #569cd6}
+.cm-s-dark span.cm-attribute {color: #9cdcfe}
+.cm-s-dark span.cm-qualifier {color: #d7ba7d}
+.cm-s-dark span.cm-bracket {color: #808080}
+
+.cm-s-dark.CodeMirror {background: #222e3c; color: #e9e9e9; border: 1px solid #4e5863;}
+.cm-s-dark .CodeMirror-cursor {border-left: 1px solid #fff !important;}
+.CodeMirror-activeline-background {background: #38424f;}
+.cm-s-dark div.CodeMirror-selected {background: #1e496c}
+.cm-s-dark .CodeMirror-gutters {background: #222e3c; border: 0px; border-right: 1px solid #4e5863; color: #a7abb1}
+.cm-s-dark span.cm-builtin {color: #A9B7C6;}
+.cm-s-dark .CodeMirror-matchingbracket {background-color: #3b514d; color: yellow !important;}
+
+.CodeMirror-hints.dark {color: #9c9e9e; background-color: #3b3e3f !important;}
+.CodeMirror-hints.dark .CodeMirror-hint-active {background-color: #494d4e !important; color: #9c9e9e !important;}
+.CodeMirror-linenumber {min-width: 25px; color: #a7abb1;}
+
+.cm-s-dark .cm-smarty.cm-tag{color: white;}
+.cm-s-dark .cm-smarty.cm-operator{color: white;}
+.cm-s-dark .cm-smarty.cm-string {color: white}
+.cm-s-dark .cm-smarty.cm-variable {color: white;}
+.cm-s-dark .cm-smarty.cm-variable-2 {color: white}
+.cm-s-dark .cm-smarty.cm-variable-3 {color: white;}
+.cm-s-dark .cm-smarty.cm-property {color: white;}
+.cm-s-dark .cm-smarty.cm-attribute {color: white}
+.cm-s-dark .cm-smarty.cm-qualifier {color: white;}
+.cm-s-dark .cm-smarty.cm-number {color: white;}
+.cm-s-dark .cm-smarty.cm-keyword {color: white;}
+.cm-s-dark .cm-smarty.cm-string {color: white}
+.cm-s-dark .cm-smarty.cm-bracket {color: white;}
+.cm-s-dark .cm-tag-smarty{color: white;}

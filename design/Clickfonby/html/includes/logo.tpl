@@ -1,0 +1,1 @@
+<img src="design/{$settings->theme|escape}/images/logo.svg" alt="" class="logo">

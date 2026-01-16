@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<group>
+		<name>{$lang->general_settings}</name>
+		<settings>
+			<variable>phone_1</variable>
+			<name>{$lang->phone_1}</name>
+		</settings>
+		<settings>
+			<variable>phone_2</variable>
+			<name>{$lang->phone_2}</name>
+		</settings>
+		<settings>
+			<variable>phone_3</variable>
+			<name>{$lang->phone_3}</name>
+		</settings>
+		<settings>
+			<variable>phone_mask</variable>
+			<name>{$lang->phone_mask}</name>
+		</settings>
+		<settings>
+			<variable>email</variable>
+			<name>{$lang->email}</name>
+		</settings>
+        <settings>
+            <variable>company_name</variable>
+            <name>Название (ООО/ИП)</name>
+        </settings>
+        <settings>
+            <variable>unp</variable>
+            <name>Реквизиты</name>
+        </settings>
+        <settings>
+            <variable>company_address</variable>
+            <name>Адрес</name>
+        </settings>
+		<settings>
+			<variable>telegram</variable>
+			<name>Telegram</name>
+		</settings>
+
+		<settings>
+			<variable>whatsapp</variable>
+			<name>Whats App</name>
+		</settings>
+		<settings>
+			<variable>viber</variable>
+			<name>Viber</name>
+		</settings>
+		<settings>
+			<variable>instagram</variable>
+			<name>Instagram</name>
+		</settings>
+        <settings>
+            <variable>vk</variable>
+            <name>Вконтакте</name>
+        </settings>
+
+	</group>
+
+	<group type="sort">
+        <name>{$lang->main_page}</name>
+
+        <settings>
+            <variable>block_3</variable>
+			<visible>visible_3</visible>
+            <name>{$lang->products_tab}</name>
+            <options>
+                <name>{$lang->products_tab}</name>
+                <value>3</value>
+            </options>
+        </settings>
+        <settings>
+            <variable>block_4</variable>
+			<visible>visible_4</visible>
+            <name>{$lang->brands}</name>
+            <options>
+                <name>{$lang->brands}</name>
+                <value>4</value>
+            </options>
+        </settings>
+        <settings>
+            <variable>block_5</variable>
+			<visible>visible_5</visible>
+            <name>{$lang->banners_text}</name>
+            <options>
+                <name>{$lang->banners_text}</name>
+                <value>5</value>
+            </options>
+        </settings>
+
+
+		<settings>
+            <variable>block_9</variable>
+			<visible>visible_9</visible>
+            <name>{$lang->company_text}</name>
+            <options>
+                <name>{$lang->company_text}</name>
+                <value>9</value>
+            </options>
+        </settings>
+
+    </group>
+    
+</module>

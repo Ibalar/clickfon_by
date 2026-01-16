@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+		Platon
+	</name>
+	<settings>
+		<variable>platon_key</variable>
+		<name>{$lang->key}</name>
+	</settings>
+	<settings>
+		<variable>platon_password</variable> 
+		<name>{$lang->password}</name>
+	</settings>
+</module>
