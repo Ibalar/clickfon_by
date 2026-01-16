@@ -18,7 +18,7 @@
 
                                 {if $c->image}
                             <div class="img">
-                                    <img src="{$c->image|resize_catalog:120:120}" alt="{$c->name|escape}" class="img-contain">
+                                    {img url=$c->image|resize_catalog:120:120 alt=$c->name width=120 height=120 class="img-contain"}
                             </div>
                                 {else}
                                     

@@ -20,6 +20,7 @@
 <!-- ===== home scripts ===== -->
 <script src="design/{$settings->theme|escape}/js/home_1_scripts.js"></script>
 <script src="design/{$settings->theme|escape}/js/inner_pages.js"></script>
+<script src="design/{$settings->theme|escape}/js/lazy-load.js"></script>
 
 <script>
     $(document).on('click', 'a.icon.wishlist', function(e) {

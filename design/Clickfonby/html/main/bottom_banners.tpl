@@ -4,7 +4,7 @@
         <div class="col-lg-4 d-none d-lg-block">
             <div class="card-overlay card-center">
                 <div class="img th-380">
-                    <img src="{$b->image|resize_banners:1919:180}" alt="" class="img-cover">
+                    {img url=$b->image|resize_banners:1919:180 alt=$b->title width=1919 height=180 class="img-cover"}
                 </div>
                 <div class="info p-50">
                     <div class="cont">

@@ -30,3 +30,4 @@
 <link rel="stylesheet" href="design/{$settings->theme|escape}/css/home_1_style.css">
 
 <link rel="stylesheet" href="design/{$settings->theme|escape}/css/inner_pages.css">
+<link rel="stylesheet" href="design/{$settings->theme|escape}/css/images.css">

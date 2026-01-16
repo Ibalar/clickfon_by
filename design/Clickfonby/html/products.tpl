@@ -2,30 +2,30 @@
 
 {* Canonical *}
 {if $page}
-	{$canonical="/{$page->url}" scope=global}
+    {$canonical="/{$page->url}" scope=global}
 {elseif $category && $brand}
-	{$canonical="/catalog/{$category->url}/{$brand->url}" scope=global}
+    {$canonical="/catalog/{$category->url}/{$brand->url}" scope=global}
 {elseif $category}
-	{$canonical="/catalog/{$category->url}" scope=global}
+    {$canonical="/catalog/{$category->url}" scope=global}
 {elseif $brand}
-	{$canonical="/brands/{$brand->url}" scope=global}
+    {$canonical="/brands/{$brand->url}" scope=global}
 {elseif $keyword}
-	{$canonical="/all-products?keyword={$keyword|escape}" scope=global}
+    {$canonical="/all-products?keyword={$keyword|escape}" scope=global}
 {else}
-	{$canonical="/all-products" scope=global}
+    {$canonical="/all-products" scope=global}
 {/if}
 
 {* Load *}
 {if isset($smarty.get.tpl) && $smarty.get.tpl == 'new'}
-	{$wrapper='loading/new.tpl' scope=global}
+    {$wrapper='loading/new.tpl' scope=global}
 {/if}
 
 {if isset($smarty.get.tpl) && $smarty.get.tpl == 'recommend'}
-	{$wrapper='loading/recommend.tpl' scope=global}
+    {$wrapper='loading/recommend.tpl' scope=global}
 {/if}
 
 {if isset($smarty.get.tpl) && $smarty.get.tpl == 'stock'}
-	{$wrapper='loading/stock.tpl' scope=global}
+    {$wrapper='loading/stock.tpl' scope=global}
 {/if}
 
 
@@ -103,7 +103,7 @@
 
 {* Catalog *}
 {if $page && $page->url=='catalog'}
-	{include file='catalog.tpl'}
+    {include file='catalog.tpl'}
 {else}
 
     {* Subcategories *}
@@ -356,9 +356,9 @@
 
                                             <a href="{$lang_link}products/{$product->url}" class="img mb-20 d-block">
                                                 {if $product->image}
-                                                    <img class="img-contain" src="{$product->image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}" />
+                                                    {img url=$product->image->filename|resize:700:700 alt=$product->name width=700 height=700 class="img-contain"}
                                                 {else}
-                                                    <img class="img-contain" style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}" />
+                                                    {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$product->name width=170 height=170 class="img-contain"}
                                                 {/if}
                                             </a>
                                             <div class="info">

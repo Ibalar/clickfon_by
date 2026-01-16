@@ -19,9 +19,9 @@
                         {foreach $all_brands|@array_slice:0:$theme_settings->brands_main_limit as $b}
                         <a href="{$lang_link}brands/{$b->url}" class="logo">
                             {if $b->image}
-                                <img src="{$b->image|resize_brands:150:50}" alt="{$b->name|escape}" title="{$b->name|escape}">
+                                {img url=$b->image|resize_brands:150:50 alt=$b->name width=150 height=50}
                             {else}
-                                <img style="width: 100px; height: 100px;" class="brands-list__image ls-is-cached lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$b->name|escape}" title="{$b->name|escape}">
+                                {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$b->name width=100 height=100}
                             {/if}
                         </a>
                         {/foreach}

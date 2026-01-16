@@ -58,11 +58,11 @@
                         {if $purchase->product->images}
                             {$image = $purchase->product->images|first}
                             <div class="prod_img">
-                                <img src="{$image->filename|resize:70:70}" alt="{$purchase->product->name|escape}" class="">
+                                {img url=$image->filename|resize:70:70 alt=$purchase->product->name width=70 height=70}
                             </div>
                         {else}
                             <div class="prod_img">
-                                <img src="design/{$settings->theme|escape}/images/no-photo.svg" class="" alt="{$purchase->product->name|escape}">
+                                {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$purchase->product->name width=70 height=70}
                             </div>
                         {/if}
                     </td>
@@ -105,118 +105,118 @@
 </section>
 
 <div class="container">
-	<div class="row">
-		<div class="maxwidth-theme">
-			<div class="col-md-12 col-sm-12 col-xs-12 content-md">
-				<div class="right_block narrow_N">
-					<div class="form cart">
-						<div id="basket-root" class="tb-basket tb-blue tb-step-opacity" style="opacity: 1;">
-							<div class="flexbox flexbox--row basket-items-list">
-								<div class="basket-items-list-outer">
-									<div class="row basket-items-list-wrapper">
-										<div class="col-md-12">
-											{* Order Details *}
-											<h2>{$lang->order_details|escape}</h2>
-											<div class="bordered outer-rounded-x">
-												<table class="table table-details">
-													<tbody>
-														<tr>
-															<td scope="row">
-																{$lang->order_date|escape}
-															</td>
-															<td>
-																{$order->date|date} {$lang->at|escape}
-																{$order->date|time}
-															</td>
-														</tr>
-														{if $order->name}
-															<tr>
-																<td scope="row">
-																	{$lang->name|escape}
-																</td>
-																<td>
-																	{$order->name|escape}
-																</td>
-															</tr>
-														{/if}
-														{if $order->email}
-															<tr>
-																<td scope="row">
-																	Email
-																</td>
-																<td>
-																	{$order->email|escape}
-																</td>
-															</tr>
-														{/if}
-														{if $order->phone}
-															<tr>
-																<td scope="row">
-																	{$lang->phone|escape}
-																</td>
-																<td>
-																	{$order->phone|escape}
-																</td>
-															</tr>
-														{/if}
-														{if $delivery}
-															<tr>
-																<td scope="row">
-																	{$lang->delivery_method|escape}
-																</td>
-																<td>
-																	{$delivery->name|escape}
-																</td>
-															</tr>
-														{/if}
-														{if $order->address}
-															<tr>
-																<td scope="row">
-																	{$lang->delivery_address|escape}
-																</td>
-																<td>
-																	{$order->address|escape}
-																</td>
-															</tr>
-														{/if}
-														{if $order->comment}
-															<tr>
-																<td scope="row">
-																	{$lang->comment|escape}
-																</td>
-																<td>
-																	{$order->comment|escape|nl2br}
-																</td>
-															</tr>
-														{/if}
-													</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="basket-total-outer">
-									<div class="basket-total-block">
-										<div class="basket-checkout-container visible">
-											<div class="basket-checkout-section">
-												<div class="basket-checkout-section-inner">
-													<div class="basket-checkout-section-left">
+    <div class="row">
+        <div class="maxwidth-theme">
+            <div class="col-md-12 col-sm-12 col-xs-12 content-md">
+                <div class="right_block narrow_N">
+                    <div class="form cart">
+                        <div id="basket-root" class="tb-basket tb-blue tb-step-opacity" style="opacity: 1;">
+                            <div class="flexbox flexbox--row basket-items-list">
+                                <div class="basket-items-list-outer">
+                                    <div class="row basket-items-list-wrapper">
+                                        <div class="col-md-12">
+                                            {* Order Details *}
+                                            <h2>{$lang->order_details|escape}</h2>
+                                            <div class="bordered outer-rounded-x">
+                                                <table class="table table-details">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td scope="row">
+                                                                {$lang->order_date|escape}
+                                                            </td>
+                                                            <td>
+                                                                {$order->date|date} {$lang->at|escape}
+                                                                {$order->date|time}
+                                                            </td>
+                                                        </tr>
+                                                        {if $order->name}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    {$lang->name|escape}
+                                                                </td>
+                                                                <td>
+                                                                    {$order->name|escape}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                        {if $order->email}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    Email
+                                                                </td>
+                                                                <td>
+                                                                    {$order->email|escape}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                        {if $order->phone}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    {$lang->phone|escape}
+                                                                </td>
+                                                                <td>
+                                                                    {$order->phone|escape}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                        {if $delivery}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    {$lang->delivery_method|escape}
+                                                                </td>
+                                                                <td>
+                                                                    {$delivery->name|escape}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                        {if $order->address}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    {$lang->delivery_address|escape}
+                                                                </td>
+                                                                <td>
+                                                                    {$order->address|escape}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                        {if $order->comment}
+                                                            <tr>
+                                                                <td scope="row">
+                                                                    {$lang->comment|escape}
+                                                                </td>
+                                                                <td>
+                                                                    {$order->comment|escape|nl2br}
+                                                                </td>
+                                                            </tr>
+                                                        {/if}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="basket-total-outer">
+                                    <div class="basket-total-block">
+                                        <div class="basket-checkout-container visible">
+                                            <div class="basket-checkout-section">
+                                                <div class="basket-checkout-section-inner">
+                                                    <div class="basket-checkout-section-left">
                                                         <div class="total d-flex justify-content-between py-3 fsz-16 fw-bold">
                                                             <span> {$lang->total|escape} </span>
                                                             <span class="color-green2"> {$order->total_price|convert}&nbsp;{$currency->sign} </span>
                                                         </div>
 
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

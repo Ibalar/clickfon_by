@@ -34,9 +34,9 @@
 
     <a href="{$lang_link}products/{$product->url}" class="img mb-20 d-block">
         {if $product->image}
-            <img class="img-contain" src="{$product->image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}" />
+            {img url=$product->image->filename|resize:700:700 alt=$product->name width=700 height=700 class="img-contain"}
         {else}
-            <img class="img-contain" style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}" />
+            {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$product->name width=170 height=170 class="img-contain"}
         {/if}
     </a>
     <div class="info">

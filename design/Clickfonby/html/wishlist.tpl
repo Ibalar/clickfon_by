@@ -1,14 +1,14 @@
 {* Wishlist *}
 
 {if $page}
-	{* Canonical *}
-	{$canonical="/{$page->url}" scope=global}
+    {* Canonical *}
+    {$canonical="/{$page->url}" scope=global}
 {else}
-	{* Meta Title *}
-	{$meta_title = $lang->wishlist scope=global}
+    {* Meta Title *}
+    {$meta_title = $lang->wishlist scope=global}
 
-	{* Canonical *}
-	{$canonical="/wishlist" scope=global}
+    {* Canonical *}
+    {$canonical="/wishlist" scope=global}
 {/if}
 
 <!--title_content-->
@@ -99,7 +99,7 @@
                             </a>
                         </div>
                         <a href="{$lang_link}products/{$product->url}" class="img">
-                            <img src="{$product->image->filename|resize:700:700}" alt="{$product->name|escape}" class="img-contain main-image">
+                            {img url=$product->image->filename|resize:700:700 alt=$product->name width=700 height=700 class="img-contain main-image"}
                         </a>
                         <div class="info">
                             {if $product->rating}

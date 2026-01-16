@@ -2,20 +2,20 @@
 
 {* Modals *}
 {if isset($smarty.server.HTTP_X_REQUESTED_WITH) && $smarty.server.HTTP_X_REQUESTED_WITH == 'XMLHttpRequest'}
-	{assign var="cleanTpl" value=$smarty.get.tpl|replace:"?":""}
-	{if $cleanTpl == 'quickview'}
-		{$wrapper = 'modals/quickview.tpl' scope=global}
-	{elseif $cleanTpl == 'detail_clothes'}
-		{$wrapper = 'modals/detail_clothes.tpl' scope=global}
-	{elseif $cleanTpl == 'fast_order'}
-		{$wrapper = 'modals/fast_order.tpl' scope=global}
-	{elseif $cleanTpl == 'grid'}
-		{$wrapper = 'loading/grid.tpl' scope=global}
-	{elseif $cleanTpl == 'list'}
-		{$wrapper = 'loading/list.tpl' scope=global}
-	{elseif $cleanTpl == 'price'}
-		{$wrapper = 'loading/price.tpl' scope=global}
-	{/if}
+    {assign var="cleanTpl" value=$smarty.get.tpl|replace:"?":""}
+    {if $cleanTpl == 'quickview'}
+        {$wrapper = 'modals/quickview.tpl' scope=global}
+    {elseif $cleanTpl == 'detail_clothes'}
+        {$wrapper = 'modals/detail_clothes.tpl' scope=global}
+    {elseif $cleanTpl == 'fast_order'}
+        {$wrapper = 'modals/fast_order.tpl' scope=global}
+    {elseif $cleanTpl == 'grid'}
+        {$wrapper = 'loading/grid.tpl' scope=global}
+    {elseif $cleanTpl == 'list'}
+        {$wrapper = 'loading/list.tpl' scope=global}
+    {elseif $cleanTpl == 'price'}
+        {$wrapper = 'loading/price.tpl' scope=global}
+    {/if}
 {/if}
 
 {* Canonical *}
@@ -81,14 +81,14 @@
                             {foreach $product->images as $image}
                                 <div class="swiper-slide">
                                     <div class="img">
-                                        <img src="{$image->filename|resize:700:700}" alt="{$product->name|escape}">
+                                        {img url=$image->filename|resize:700:700 alt=$product->name width=700 height=700 lazy=$image@index!=0}
                                     </div>
                                 </div>
                             {/foreach}
                         {else}
                             <div class="swiper-slide">
                                 <div class="img">
-                                    <img src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}">
+                                    {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$product->name width=700 height=700 lazy=false}
                                 </div>
                             </div>
                         {/if}
@@ -102,14 +102,14 @@
                             {foreach $product->images as $image}
                                 <div class="swiper-slide">
                                     <div class="img">
-                                        <img src="{$image->filename|resize:88:88}" alt="{$product->name|escape}">
+                                        {img url=$image->filename|resize:88:88 alt=$product->name width=88 height=88}
                                     </div>
                                 </div>
                             {/foreach}
                         {else}
                             <div class="swiper-slide">
                                 <div class="img">
-                                    <img src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}">
+                                    {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$product->name width=88 height=88}
                                 </div>
                             </div>
                         {/if}
