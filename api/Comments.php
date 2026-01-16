@@ -208,6 +208,10 @@ class Comments extends Turbo
                 case 'product':
                     $this->updateProductCommentStats($comment['object_id']);
                     $this->db->query("UPDATE __products SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
+                    
+                    // Инвалидировать кэш товара
+                    $this->cache->delete('product_' . $comment['object_id']);
+                    $this->cache->delete('products_list_*');
                     break;
                 case 'article':
                     $this->db->query("UPDATE __articles SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
@@ -244,6 +248,10 @@ class Comments extends Turbo
         // If comment is about a product and approval status or rating changed, update stats
         if ($oldComment && ($oldComment->type === 'product')) {
             $this->updateProductCommentStats($oldComment->object_id);
+            
+            // Инвалидировать кэш товара
+            $this->cache->delete('product_' . $oldComment->object_id);
+            $this->cache->delete('products_list_*');
         }
 
         return $id;
@@ -261,6 +269,10 @@ class Comments extends Turbo
 
             if ($comment->approved == 1 && $comment->type === 'product') {
                 $this->updateProductCommentStats($comment->object_id);
+                
+                // Инвалидировать кэш товара
+                $this->cache->delete('product_' . $comment->object_id);
+                $this->cache->delete('products_list_*');
             }
 
             if ($comment->approved == 1) {

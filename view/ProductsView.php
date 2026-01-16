@@ -441,42 +441,50 @@ class ProductsView extends View
         }
 
         // Products
-        $products = [];
+        $cacheKey = 'products_list_' . md5(json_encode($filter));
+        $products = $this->cache->get($cacheKey);
 
-        foreach ($this->products->getProducts($filter) as $product) {
-            $products[$product->id] = $product;
+        if ($products === false) {
+            $products = [];
+            foreach ($this->products->getProducts($filter) as $product) {
+                $products[$product->id] = $product;
+                $products[$product->id]->variants = [];
+                $products[$product->id]->images = [];
+            }
+
+            if (!empty($products)) {
+                $productsIds = array_keys($products);
+
+                // Load product variants and images using bulk queries (no N+1 problem here)
+                $variants = $this->variants->getVariants(['product_id' => $productsIds]);
+
+                foreach ($variants as &$variant) {
+                    $products[$variant->product_id]->variants[] = $variant;
+                }
+
+                $images = $this->products->getImages(['product_id' => $productsIds]);
+
+                foreach ($images as $image) {
+                    $products[$image->product_id]->images[] = $image;
+                }
+            }
+            $this->cache->set($cacheKey, $products, 'products_list');
         }
 
         if (!empty($keyword) && $productsCount == 1) {
+            $product = reset($products);
             header('Location: ' . $this->config->root_url . '/products/' . $product->url);
         }
 
         if (!empty($products)) {
-            $productsIds = array_keys($products);
-
-            // Load product variants and images using bulk queries (no N+1 problem here)
-            $variants = $this->variants->getVariants(['product_id' => $productsIds]);
-
-         foreach ($variants as &$variant) {
-                $products[$variant->product_id]->variants[] = $variant;
-            }
-
-            $images = $this->products->getImages(['product_id' => $productsIds]);
-
-         foreach ($images as $image) {
-                $products[$image->product_id]->images[] = $image;
-            }
-
             // Set product properties using denormalized fields to avoid N+1 queries
             // Instead of separate countComments() and rating queries per product,
             // we now use avg_rating and total_comments from the products table
             // which are maintained by database triggers
-         foreach ($products as &$product) {
-                $product->variants = [];
-                $product->images = [];
+            foreach ($products as &$product) {
                 $product->comments_count = $product->total_comments;
                 $product->ratings = floatval($product->avg_rating);
-         }
+            }
 
             foreach ($products as &$product) {
                 if (isset($product->variants[0])) {

@@ -1,122 +1,100 @@
 <?php
 
 require_once 'Turbo.php';
+require_once 'Cache/FileCache.php';
+require_once 'Cache/RedisCache.php';
+require_once 'Cache/MemcacheCache.php';
 
 class Cache extends Turbo
 {
-	public function __construct()
-	{
-		$this->init();
-	}
+    private $backend;
+    private $cacheTTL = [
+        'categories' => 3600,           // 1 час
+        'brands' => 3600,               // 1 час
+        'features' => 3600,             // 1 час
+        'products_list' => 600,         // 10 минут (часто меняется)
+        'product_detail' => 1800,       // 30 минут
+        'filters' => 3600,              // 1 час
+        'settings' => 86400,            // 1 день
+        'pages' => 86400,               // 1 день
+        'default' => 3600,
+    ];
 
-	public $mem;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->init();
+    }
 
-	private $configuration = [
-		'host' => '127.0.0.1',
-		'port' => 11211,
-		'lifeTimeCache' => 86400,
-	];
+    public function init()
+    {
+        $type = $this->config->cache_type ?: $this->settings->cache_type;
+        
+        // Priority: Redis > Memcache > File
+        if ($type == 'redis' && extension_loaded('redis')) {
+            $this->backend = new RedisCache(
+                $this->config->redis_host ?? '127.0.0.1',
+                $this->config->redis_port ?? 6379,
+                $this->config->redis_db ?? 0,
+                $this->config->redis_password ?? null
+            );
+            if (!$this->backend->isConnected()) {
+                $this->backend = null;
+            }
+        }
 
-	/**
-	 * PHP extension type flag to use
-	 * True - memcache
-	 * False - memcached
-	 */
-	private $isMemcached = false;
+        if (!$this->backend && ($type == 'memcache' || $type == 'memcached' || $this->settings->cache_type == 1 || empty($type))) {
+            if (extension_loaded('memcached') || extension_loaded('memcache')) {
+                $this->backend = new MemcacheCache(
+                    $this->config->memcache_host ?? '127.0.0.1',
+                    $this->config->memcache_port ?? 11211,
+                    ($type == 'memcached' || $this->settings->cache_type == 1)
+                );
+                if (!$this->backend->isConnected()) {
+                    $this->backend = null;
+                }
+            }
+        }
 
-	public function init()
-	{
-		if ($this->settings->cache_type == 1) {
-			$cache_type = 'memcached';
-		} else {
-			$cache_type = 'memcache';
-		}
+        if (!$this->backend) {
+            $this->backend = new FileCache(
+                $this->config->cache_file_dir ?? dirname(__DIR__) . '/compiled/cache'
+            );
+        }
+    }
 
-		$this->isMemcached = $this->isMemcachedUse();
+    public function get($key)
+    {
+        return $this->backend->get($this->stringToKey($key));
+    }
 
-		if (!extension_loaded($cache_type)) {
-			throw new Exception("Php extension {$cache_type} not found. Please install the memcache extension.");
-		}
+    public function set($key, $value, $type = 'default')
+    {
+        $ttl = $this->cacheTTL[$type] ?? $this->cacheTTL['default'];
+        if ($this->settings->cache_time > 0 && $type == 'default') {
+             $ttl = $this->settings->cache_time;
+        }
+        $this->backend->set($this->stringToKey($key), $value, $ttl);
+    }
 
-		$this->mem = $this->isMemcached ? new Memcached() : new Memcache();
-		$this->mem->addServer($this->configuration['host'], $this->configuration['port']);
-	}
+    public function delete($key)
+    {
+        $this->backend->delete($this->stringToKey($key));
+    }
+    
+    public function del($key)
+    {
+        $this->delete($key);
+    }
 
-	public function get($stringKey)
-	{
-		if ($this->mem != null) {
-			$result = $this->mem->get($this->stringToHash($stringKey));
-		}
+    public function clearall()
+    {
+        $this->backend->flush();
+    }
 
-		if (!empty($result)) {
-			return $result;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Pushes a value into the cache by key
-	 * @param string $stringKey key
-	 * @param $value Result set (set of data to put into cache)
-	 * @param $lifeCache cache lifetime 
-	 */
-	public function set($stringKey, $value)
-	{
-		if ($this->settings->cache_time > 0) {
-			$lifeCache = $this->settings->cache_time;
-		} else {
-			$lifeCache = $this->configuration['lifeTimeCache'];
-		}
-
-		if ($this->isMemcached) {
-			$this->mem->set($this->stringToHash($stringKey), $value, $lifeCache);
-		} else {
-			$this->mem->set($this->stringToHash($stringKey), $value, 0, $lifeCache);
-		}
-	}
-
-	/**
-	 * Removes a value from memory by key
-	 * @var string $stringKey attribute labels
-	 */
-	public function del($stringKey)
-	{
-		$this->mem->delete($this->stringToHash($stringKey));
-	}
-
-	/**
-	 * Invalidates all existing entries in the cache
-	 * @var integer $delay The period of time after which to perform a complete clearing of the cache
-	 * @return true or false
-	 */
-	public function clearall($delay = 0)
-	{
-		$this->mem->flush();
-	}
-
-	/**
-	 * From regular string to md5 hash
-	 * @var string $stringKey - Key
-	 */
-	private function stringToHash($stringKey)
-	{
-		$stringKey = $this->config->root_url . $stringKey;
-
-		if ($this->isMemcached) {
-			return md5('key' . $stringKey);
-		} else {
-			return md5($stringKey);
-		}
-	}
-
-	/**
-	 * Checks if PHP memcached extension is used
-	 */
-	private function isMemcachedUse()
-	{
-		if ($this->settings->cache_type == 1) {
-			return true;
-		}
-	}
+    private function stringToKey($key)
+    {
+        $prefix = md5($this->config->root_url);
+        return $prefix . ':' . $key;
+    }
 }

@@ -106,3 +106,23 @@ cms_files_dir = files/files/;
 
 ;Digital products directory
 downloads_dir = files/downloads/;
+[cache]
+
+; Тип кэша: redis, memcache, file (auto-fallback)
+cache_type = redis
+
+; Параметры Redis
+redis_host = 127.0.0.1
+redis_port = 6379
+redis_db = 0
+redis_password = 
+
+; Параметры Memcache
+memcache_host = 127.0.0.1
+memcache_port = 11211
+
+; Параметры файлового кэша
+cache_file_dir = compiled/cache
+
+; Общий TTL по умолчанию
+cache_time = 3600
