@@ -157,6 +157,10 @@ class Variants extends Turbo
             // Update denormalized product fields after variant update
             if ($productId) {
                 $this->updateProductVariantStats($productId);
+                
+                // Инвалидировать кэш товара
+                $this->cache->delete('product_' . $productId);
+                $this->cache->delete('products_list_*');
             }
         }
 
@@ -192,6 +196,10 @@ class Variants extends Turbo
         // Update denormalized product fields after adding variant
         if (!empty($variant->product_id)) {
             $this->updateProductVariantStats($variant->product_id);
+            
+            // Инвалидировать кэш товара
+            $this->cache->delete('product_' . $variant->product_id);
+            $this->cache->delete('products_list_*');
         }
 
         return $variantId;
@@ -219,6 +227,10 @@ class Variants extends Turbo
             // Update denormalized product fields after variant deletion
             if ($productId) {
                 $this->updateProductVariantStats($productId);
+                
+                // Инвалидировать кэш товара
+                $this->cache->delete('product_' . $productId);
+                $this->cache->delete('products_list_*');
             }
         }
     }

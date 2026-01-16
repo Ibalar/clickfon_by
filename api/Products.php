@@ -479,6 +479,14 @@ class Products extends Turbo
         $query = $this->db->placehold("UPDATE __products SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $product, (array) $id, count((array) $id));
         $this->db->query($query);
 
+        // Инвалидировать кэш
+        foreach ((array) $id as $i) {
+            $this->cache->delete('product_' . $i);
+        }
+        $this->cache->delete('products_list_*');
+        $this->cache->delete('categories_*');
+        $this->cache->delete('filters_*');
+
         if (!empty($result->description)) {
             $this->languages->actionDescription($id, $result->description, 'product', $this->languages->langId());
         }
@@ -594,6 +602,11 @@ class Products extends Turbo
 
             $query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", (int) $id);
             if ($this->db->query($query)) {
+                // Инвалидировать кэш
+                $this->cache->delete('product_' . $id);
+                $this->cache->delete('products_list_*');
+                $this->cache->delete('categories_*');
+                $this->cache->delete('filters_*');
                 return true;
             }
         }
