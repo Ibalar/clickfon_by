@@ -1,3 +1,158 @@
-*.log
-/turbo/.passwd
 /.osp
+
+# ==========================================
+# TURBOCMS .gitignore
+# ==========================================
+
+# === СИСТЕМНЫЕ ФАЙЛЫ ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+.project
+.buildpath
+.settings
+*.sublime-project
+*.sublime-workspace
+
+# === IDE & EDITORS ===
+.idea/
+.vscode/
+.vs/
+*.iml
+*.iws
+*.ipr
+.history/
+.ionide/
+sftp-config.json
+.env.local
+.env.*.local
+
+# === ЗАВИСИМОСТИ ===
+vendor/
+composer.lock
+node_modules/
+package-lock.json
+yarn.lock
+
+# === КЭШИРОВАНИЕ ===
+compiled/
+cache/
+/tmp/
+*.cache
+.cache/
+
+# === ЗАГРУЗКИ И ФАЙЛЫ ПОЛЬЗОВАТЕЛЕЙ ===
+files/originals/
+files/products/
+files/categories/
+files/brands/
+files/uploads/
+files/downloads/
+files/slides/
+files/payment/
+files/delivery/
+design/*/images/uploads/
+public/uploads/
+
+# === ЛОГИ И ОШИБКИ ===
+logs/
+*.log
+error.log
+debug.log
+access.log
+errors.log
+
+# === КОНФИГУРАЦИЯ И ДАННЫЕ ===
+config/local.php
+config/database.php
+.env
+.env.local
+.env.*.local
+.passwd
+turbo/.passwd
+.htpasswd
+
+# === БАЗА ДАННЫХ ===
+*.sql
+*.sql.gz
+*.dump
+database.sqlite
+*.sqlite
+*.db
+
+# === TEMPORARIES ===
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+.~*
+
+# === WINDOWS ===
+Thumbs.db
+ehthumbs.db
+.Thumbs.db
+Desktop.ini
+
+# === MACOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# === LINUX ===
+.directory
+
+# === GZIP МИНИФИКАЦИЯ (если нужно исключить) ===
+gzip/*.gz
+cache/minify/
+
+# === РЕЗЕРВНЫЕ КОПИИ ===
+*.bak
+*.backup
+*.old
+backup/
+backups/
+
+# === OS-SPECIFIC ===
+.svn/
+.git/
+.gitkeep
+
+# === ЛОКАЛЬНАЯ РАЗРАБОТКА ===
+.env.development.local
+.env.test.local
+.env.production.local
+local_config.php
+test_redis.php
+test_db.php
+debug.php
+
+# === PHP-СПЕЦИФИЧНЫЕ ===
+.php_cs.cache
+.phpunit.result.cache
+.phpstan.cache
+.phan/
+
+# === NPM/YARN (если используется) ===
+node_modules/
+dist/
+build/
+npm-debug.log
+yarn-error.log
+
+# === ВЕРСИОНИРОВАНИЕ ===
+.version
+VERSION
+
+# === ПРОЧЕЕ ===
+.env.example  # Если это не template
+admin_notes.txt
+TODO.md
+NOTES.md
