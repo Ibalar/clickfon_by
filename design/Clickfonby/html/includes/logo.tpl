@@ -1,1 +1,1 @@
-<img src="design/{$settings->theme|escape}/images/logo.svg" alt="" class="logo">
+{img url="design/{$settings->theme|escape}/images/logo.svg" alt=$settings->site_name|escape width=162 height=40 lazy=false class="logo"}

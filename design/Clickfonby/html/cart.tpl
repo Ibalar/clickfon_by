@@ -55,9 +55,9 @@
                                     <a href="{$lang_link}products/{$purchase->product->url}" class="img">
                                         {if $purchase->product->images}
                                             {$image = $purchase->product->images|first}
-                                            <img src="{$image->filename|resize:160:160}" alt="{$purchase->product->name|escape}" class="img-contain main-image">
+                                            {img url=$image->filename|resize:160:160 alt=$purchase->product->name width=160 height=160 class="img-contain main-image"}
                                         {else}
-                                            <img src="design/{$settings->theme|escape}/images/no-photo.svg" class="img-contain main-image" alt="{$purchase->product->name|escape}">
+                                            {img url="design/{$settings->theme|escape}/images/no-photo.svg" alt=$purchase->product->name width=160 height=160 class="img-contain main-image"}
                                         {/if}
                                     </a>
                                     <div class="info">
@@ -122,7 +122,7 @@
                                                        id="delivery-{$delivery->id}"
                                                        value="{$delivery->id}">
                                                 <label class="form-check-label d-block" for="delivery-{$delivery->id}">
-                                                    <h6 class="fw-bold fsz-14 mb-1">{if $delivery->icon}<img src="{$config->delivery_images_dir}{$delivery->icon}" style="width:21px; height:21px;" alt="">{/if} {$delivery->name|escape}</h6>
+                                                    <h6 class="fw-bold fsz-14 mb-1">{if $delivery->icon}{img url="{$config->delivery_images_dir}{$delivery->icon}" alt="" width=21 height=21}{/if} {$delivery->name|escape}</h6>
                                                     {if $delivery->description}
                                                         <p class="fsz-13 color-666 mb-2">{$delivery->description}</p>
                                                     {/if}
@@ -150,7 +150,7 @@
                                                                    {if $payment_method@first && $delivery_id == $delivery->id}checked{/if}>
                                                             <label class="form-check-label d-block" for="payment-{$delivery->id}-{$payment_method->id}">
                                                                 <h6 class="fw-bold fsz-14 mb-1">
-                                                                    {if $payment_method->icon}<img src="{$config->payment_images_dir}{$payment_method->icon}" style="width:21px; height:21px;" alt="">{/if} {$payment_method->name|escape}
+                                                                    {if $payment_method->icon}{img url="{$config->payment_images_dir}{$payment_method->icon}" alt="" width=21 height=21}{/if} {$payment_method->name|escape}
                                                                 </h6>
                                                                 {if $payment_method->description}
                                                                     <p class="fsz-13 color-666 mb-2">{$payment_method->description}</p>
