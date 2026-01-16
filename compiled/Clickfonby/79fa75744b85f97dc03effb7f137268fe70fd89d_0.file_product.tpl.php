@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:27:23
+/* Smarty version 5.4.2, created on 2026-01-16 21:46:35
   from 'file:product.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_696a2eab717f22_84157821',
+  'unifunc' => 'content_696a878b31e1a0_32298343',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '79fa75744b85f97dc03effb7f137268fe70fd89d' => 
     array (
       0 => 'product.tpl',
-      1 => 1763668961,
+      1 => 1768589145,
       2 => 'file',
     ),
   ),
@@ -20,23 +20,23 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2eab717f22_84157821 (\Smarty\Template $_smarty_tpl) {
+function content_696a878b31e1a0_32298343 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html';
 if ((null !== ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? null)) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {?>
-	<?php $_smarty_tpl->assign('cleanTpl', $_smarty_tpl->getSmarty()->getModifierCallback('replace')($_GET['tpl'],"?",''), false, NULL);?>
-	<?php if ($_smarty_tpl->getValue('cleanTpl') == 'quickview') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'modals/quickview.tpl', false, 32);?>
-	<?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'detail_clothes') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'modals/detail_clothes.tpl', false, 32);?>
-	<?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'fast_order') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'modals/fast_order.tpl', false, 32);?>
-	<?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'grid') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'loading/grid.tpl', false, 32);?>
-	<?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'list') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'loading/list.tpl', false, 32);?>
-	<?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'price') {?>
-		<?php $_smarty_tpl->assign('wrapper', 'loading/price.tpl', false, 32);?>
-	<?php }
+    <?php $_smarty_tpl->assign('cleanTpl', $_smarty_tpl->getSmarty()->getModifierCallback('replace')($_GET['tpl'],"?",''), false, NULL);?>
+    <?php if ($_smarty_tpl->getValue('cleanTpl') == 'quickview') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'modals/quickview.tpl', false, 32);?>
+    <?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'detail_clothes') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'modals/detail_clothes.tpl', false, 32);?>
+    <?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'fast_order') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'modals/fast_order.tpl', false, 32);?>
+    <?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'grid') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'loading/grid.tpl', false, 32);?>
+    <?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'list') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'loading/list.tpl', false, 32);?>
+    <?php } elseif ($_smarty_tpl->getValue('cleanTpl') == 'price') {?>
+        <?php $_smarty_tpl->assign('wrapper', 'loading/price.tpl', false, 32);?>
+    <?php }
 }?>
 
 <?php $_smarty_tpl->assign('canonical', "/products/".((string)$_smarty_tpl->getValue('product')->url), false, 32);?>
@@ -127,26 +127,31 @@ brands"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('lang')->glob
                         <?php if ($_smarty_tpl->getValue('product')->images) {?>
                             <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('product')->images, 'image');
+$_smarty_tpl->getVariable('image')->index = -1;
 $foreach1DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('image')->value) {
 $foreach1DoElse = false;
+$_smarty_tpl->getVariable('image')->index++;
+$foreach1Backup = clone $_smarty_tpl->getVariable('image');
 ?>
                                 <div class="swiper-slide">
                                     <div class="img">
-                                        <img src="<?php echo $_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('image')->filename,700,700);?>
-" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                        <?php echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>$_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('image')->filename,700,700),'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>700,'height'=>700,'lazy'=>$_smarty_tpl->getVariable('image')->index != 0), $_smarty_tpl);?>
+
                                     </div>
                                 </div>
                             <?php
+$_smarty_tpl->setVariable('image', $foreach1Backup);
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                         <?php } else { ?>
                             <div class="swiper-slide">
                                 <div class="img">
-                                    <img src="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/images/no-photo.svg" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                    <?php ob_start();
+echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);
+$_prefixVariable1=ob_get_clean();
+echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>"design/".$_prefixVariable1."/images/no-photo.svg",'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>700,'height'=>700,'lazy'=>false), $_smarty_tpl);?>
+
                                 </div>
                             </div>
                         <?php }?>
@@ -158,26 +163,31 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                         <?php if ($_smarty_tpl->getValue('product')->images) {?>
                             <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('product')->images, 'image');
+$_smarty_tpl->getVariable('image')->index = -1;
 $foreach2DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('image')->value) {
 $foreach2DoElse = false;
+$_smarty_tpl->getVariable('image')->index++;
+$foreach2Backup = clone $_smarty_tpl->getVariable('image');
 ?>
                                 <div class="swiper-slide">
                                     <div class="img">
-                                        <img src="<?php echo $_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('image')->filename,88,88);?>
-" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                        <?php echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>$_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('image')->filename,88,88),'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>88,'height'=>88), $_smarty_tpl);?>
+
                                     </div>
                                 </div>
                             <?php
+$_smarty_tpl->setVariable('image', $foreach2Backup);
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                         <?php } else { ?>
                             <div class="swiper-slide">
                                 <div class="img">
-                                    <img src="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/images/no-photo.svg" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                    <?php ob_start();
+echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);
+$_prefixVariable2=ob_get_clean();
+echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>"design/".$_prefixVariable2."/images/no-photo.svg",'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>88,'height'=>88), $_smarty_tpl);?>
+
                                 </div>
                             </div>
                         <?php }?>

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.4.2, created on 2026-01-16 21:46:05
   from 'file:head/css.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f518db9_85753372',
+  'unifunc' => 'content_696a876dd47d56_37608006',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3f266655569a5f2503947eedf03bf21958f771e1' => 
     array (
       0 => 'head/css.tpl',
-      1 => 1762973568,
+      1 => 1768589145,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f518db9_85753372 (\Smarty\Template $_smarty_tpl) {
+function content_696a876dd47d56_37608006 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\head';
 ?><!-- bootstrap 5 -->
 <link rel="stylesheet" href="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
@@ -65,5 +65,7 @@ $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\
 /css/home_1_style.css">
 
 <link rel="stylesheet" href="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/css/inner_pages.css"><?php }
+/css/inner_pages.css">
+<link rel="stylesheet" href="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
+/css/images.css"><?php }
 }

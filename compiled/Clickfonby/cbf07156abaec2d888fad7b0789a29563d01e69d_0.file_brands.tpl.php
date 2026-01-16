@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.4.2, created on 2026-01-16 21:46:05
   from 'file:main/brands.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f487581_89145180',
+  'unifunc' => 'content_696a876dd20514_61988360',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cbf07156abaec2d888fad7b0789a29563d01e69d' => 
     array (
       0 => 'main/brands.tpl',
-      1 => 1763834755,
+      1 => 1768589145,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f487581_89145180 (\Smarty\Template $_smarty_tpl) {
+function content_696a876dd20514_61988360 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\main';
 echo $_smarty_tpl->getSmarty()->getFunctionHandler('get_brands')->handle(array('var'=>'all_brands'), $_smarty_tpl);?>
 
@@ -44,23 +44,22 @@ brands" class="more color-666 fsz-13"> Смотреть все <i class="la la-a
                     <div class="logos">
                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getSmarty()->getModifierCallback('array_slice')($_smarty_tpl->getValue('all_brands'),0,$_smarty_tpl->getValue('theme_settings')->brands_main_limit), 'b');
-$foreach9DoElse = true;
+$foreach3DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('b')->value) {
-$foreach9DoElse = false;
+$foreach3DoElse = false;
 ?>
                         <a href="<?php echo $_smarty_tpl->getValue('lang_link');?>
 brands/<?php echo $_smarty_tpl->getValue('b')->url;?>
 " class="logo">
                             <?php if ($_smarty_tpl->getValue('b')->image) {?>
-                                <img src="<?php echo $_smarty_tpl->getSmarty()->getModifierCallback('resize_brands')($_smarty_tpl->getValue('b')->image,150,50);?>
-" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('b')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('b')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                <?php echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>$_smarty_tpl->getSmarty()->getModifierCallback('resize_brands')($_smarty_tpl->getValue('b')->image,150,50),'alt'=>$_smarty_tpl->getValue('b')->name,'width'=>150,'height'=>50), $_smarty_tpl);?>
+
                             <?php } else { ?>
-                                <img style="width: 100px; height: 100px;" class="brands-list__image ls-is-cached lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/images/no-photo.svg" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('b')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('b')->name, ENT_QUOTES, 'UTF-8', true);?>
-">
+                                <?php ob_start();
+echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);
+$_prefixVariable2=ob_get_clean();
+echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>"design/".$_prefixVariable2."/images/no-photo.svg",'alt'=>$_smarty_tpl->getValue('b')->name,'width'=>100,'height'=>100), $_smarty_tpl);?>
+
                             <?php }?>
                         </a>
                         <?php

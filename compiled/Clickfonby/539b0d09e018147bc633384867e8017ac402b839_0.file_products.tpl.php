@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:27:16
+/* Smarty version 5.4.2, created on 2026-01-16 21:53:44
   from 'file:products.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_696a2ea4b364f1_83948695',
+  'unifunc' => 'content_696a8938d7df34_63654684',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '539b0d09e018147bc633384867e8017ac402b839' => 
     array (
       0 => 'products.tpl',
-      1 => 1763665939,
+      1 => 1768589145,
       2 => 'file',
     ),
   ),
@@ -22,35 +22,35 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:products/catalog_category.tpl' => 1,
   ),
 ))) {
-function content_696a2ea4b364f1_83948695 (\Smarty\Template $_smarty_tpl) {
+function content_696a8938d7df34_63654684 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html';
 if ($_smarty_tpl->getValue('page')) {?>
-	<?php $_smarty_tpl->assign('canonical', "/".((string)$_smarty_tpl->getValue('page')->url), false, 32);
+    <?php $_smarty_tpl->assign('canonical', "/".((string)$_smarty_tpl->getValue('page')->url), false, 32);
 } elseif ($_smarty_tpl->getValue('category') && $_smarty_tpl->getValue('brand')) {?>
-	<?php $_smarty_tpl->assign('canonical', "/catalog/".((string)$_smarty_tpl->getValue('category')->url)."/".((string)$_smarty_tpl->getValue('brand')->url), false, 32);
+    <?php $_smarty_tpl->assign('canonical', "/catalog/".((string)$_smarty_tpl->getValue('category')->url)."/".((string)$_smarty_tpl->getValue('brand')->url), false, 32);
 } elseif ($_smarty_tpl->getValue('category')) {?>
-	<?php $_smarty_tpl->assign('canonical', "/catalog/".((string)$_smarty_tpl->getValue('category')->url), false, 32);
+    <?php $_smarty_tpl->assign('canonical', "/catalog/".((string)$_smarty_tpl->getValue('category')->url), false, 32);
 } elseif ($_smarty_tpl->getValue('brand')) {?>
-	<?php $_smarty_tpl->assign('canonical', "/brands/".((string)$_smarty_tpl->getValue('brand')->url), false, 32);
+    <?php $_smarty_tpl->assign('canonical', "/brands/".((string)$_smarty_tpl->getValue('brand')->url), false, 32);
 } elseif ($_smarty_tpl->getValue('keyword')) {?>
-	<?php ob_start();
+    <?php ob_start();
 echo htmlspecialchars((string)$_smarty_tpl->getValue('keyword'), ENT_QUOTES, 'UTF-8', true);
 $_prefixVariable1=ob_get_clean();
 $_smarty_tpl->assign('canonical', "/all-products?keyword=".$_prefixVariable1, false, 32);
 } else { ?>
-	<?php $_smarty_tpl->assign('canonical', "/all-products", false, 32);
+    <?php $_smarty_tpl->assign('canonical', "/all-products", false, 32);
 }?>
 
 <?php if ((null !== ($_GET['tpl'] ?? null)) && $_GET['tpl'] == 'new') {?>
-	<?php $_smarty_tpl->assign('wrapper', 'loading/new.tpl', false, 32);
+    <?php $_smarty_tpl->assign('wrapper', 'loading/new.tpl', false, 32);
 }?>
 
 <?php if ((null !== ($_GET['tpl'] ?? null)) && $_GET['tpl'] == 'recommend') {?>
-	<?php $_smarty_tpl->assign('wrapper', 'loading/recommend.tpl', false, 32);
+    <?php $_smarty_tpl->assign('wrapper', 'loading/recommend.tpl', false, 32);
 }?>
 
 <?php if ((null !== ($_GET['tpl'] ?? null)) && $_GET['tpl'] == 'stock') {?>
-	<?php $_smarty_tpl->assign('wrapper', 'loading/stock.tpl', false, 32);
+    <?php $_smarty_tpl->assign('wrapper', 'loading/stock.tpl', false, 32);
 }?>
 
 
@@ -166,7 +166,7 @@ brands"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('lang')->glob
 
 
 <?php if ($_smarty_tpl->getValue('page') && $_smarty_tpl->getValue('page')->url == 'catalog') {?>
-	<?php $_smarty_tpl->renderSubTemplate('file:catalog.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+    <?php $_smarty_tpl->renderSubTemplate('file:catalog.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 } else { ?>
 
         <?php if ($_smarty_tpl->getValue('category') && $_smarty_tpl->getValue('category')->subcategories) {?>
@@ -529,15 +529,14 @@ compare/<?php echo $_smarty_tpl->getValue('product')->url;?>
 products/<?php echo $_smarty_tpl->getValue('product')->url;?>
 " class="img mb-20 d-block">
                                                 <?php if ($_smarty_tpl->getValue('product')->image) {?>
-                                                    <img class="img-contain" src="<?php echo $_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('product')->image->filename,700,700);?>
-" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" />
+                                                    <?php echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>$_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('product')->image->filename,700,700),'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>700,'height'=>700,'class'=>"img-contain"), $_smarty_tpl);?>
+
                                                 <?php } else { ?>
-                                                    <img class="img-contain" style="width: 170px; height: 170px;" src="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/images/no-photo.svg" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" />
+                                                    <?php ob_start();
+echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);
+$_prefixVariable2=ob_get_clean();
+echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>"design/".$_prefixVariable2."/images/no-photo.svg",'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>170,'height'=>170,'class'=>"img-contain"), $_smarty_tpl);?>
+
                                                 <?php }?>
                                             </a>
                                             <div class="info">

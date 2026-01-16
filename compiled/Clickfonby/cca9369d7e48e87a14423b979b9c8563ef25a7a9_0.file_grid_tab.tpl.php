@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.4.2, created on 2026-01-16 21:46:05
   from 'file:products/grid_tab.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f3031c1_21141516',
+  'unifunc' => 'content_696a876dbb6970_43496754',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cca9369d7e48e87a14423b979b9c8563ef25a7a9' => 
     array (
       0 => 'products/grid_tab.tpl',
-      1 => 1763666606,
+      1 => 1768589145,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f3031c1_21141516 (\Smarty\Template $_smarty_tpl) {
+function content_696a876dbb6970_43496754 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\products';
 ?><div class="product-card">
     <div class="top">
@@ -73,15 +73,14 @@ compare/<?php echo $_smarty_tpl->getValue('product')->url;?>
 products/<?php echo $_smarty_tpl->getValue('product')->url;?>
 " class="img mb-20 d-block">
         <?php if ($_smarty_tpl->getValue('product')->image) {?>
-            <img class="img-contain" src="<?php echo $_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('product')->image->filename,700,700);?>
-" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" />
+            <?php echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>$_smarty_tpl->getSmarty()->getModifierCallback('resize')($_smarty_tpl->getValue('product')->image->filename,700,700),'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>700,'height'=>700,'class'=>"img-contain"), $_smarty_tpl);?>
+
         <?php } else { ?>
-            <img class="img-contain" style="width: 170px; height: 170px;" src="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>
-/images/no-photo.svg" alt="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" title="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('product')->name, ENT_QUOTES, 'UTF-8', true);?>
-" />
+            <?php ob_start();
+echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);
+$_prefixVariable1=ob_get_clean();
+echo $_smarty_tpl->getSmarty()->getFunctionHandler('img')->handle(array('url'=>"design/".$_prefixVariable1."/images/no-photo.svg",'alt'=>$_smarty_tpl->getValue('product')->name,'width'=>170,'height'=>170,'class'=>"img-contain"), $_smarty_tpl);?>
+
         <?php }?>
     </a>
     <div class="info">
@@ -131,9 +130,9 @@ products/<?php echo $_smarty_tpl->getValue('product')->url;?>
         <div class="thumbnail-imgs mt-10">
             <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('product')->related_products, 'related_product');
-$foreach4DoElse = true;
+$foreach1DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('related_product')->value) {
-$foreach4DoElse = false;
+$foreach1DoElse = false;
 ?>
                 <a href="<?php echo $_smarty_tpl->getValue('lang_link');?>
 products/<?php echo $_smarty_tpl->getValue('related_product')->url;?>
@@ -151,18 +150,18 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('product')->variants, 'v');
 $_smarty_tpl->getVariable('v')->index = -1;
-$foreach5DoElse = true;
+$foreach2DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('v')->value) {
-$foreach5DoElse = false;
+$foreach2DoElse = false;
 $_smarty_tpl->getVariable('v')->index++;
 $_smarty_tpl->getVariable('v')->first = !$_smarty_tpl->getVariable('v')->index;
-$foreach5Backup = clone $_smarty_tpl->getVariable('v');
+$foreach2Backup = clone $_smarty_tpl->getVariable('v');
 ?>
             <input id="featured_<?php echo $_smarty_tpl->getValue('v')->id;?>
 " name="variant" value="<?php echo $_smarty_tpl->getValue('v')->id;?>
 " type="radio" <?php if ($_smarty_tpl->getVariable('v')->first) {?>checked<?php }?> style="display:none;">
         <?php
-$_smarty_tpl->setVariable('v', $foreach5Backup);
+$_smarty_tpl->setVariable('v', $foreach2Backup);
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
         <button type="submit" class="cart-btn addCart" value="<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('lang')->add_cart, ENT_QUOTES, 'UTF-8', true);?>
