@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'turbo-cms/turboshop',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '54356b657ae3910d53e7a6d68bd5b9b1f023017a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -98,9 +98,9 @@
             'dev_requirement' => false,
         ),
         'turbo-cms/turboshop' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '54356b657ae3910d53e7a6d68bd5b9b1f023017a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
