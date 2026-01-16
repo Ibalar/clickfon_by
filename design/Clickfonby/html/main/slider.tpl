@@ -7,10 +7,12 @@
                         <a href="{$lang_link}{$s->url|escape}">
                         <div class="slide-card">
                             <div class="img ">
-                                <picture>
-                                    <source srcset="{if $s->background}{$s->background|resize_banners:1920:660}{else}design/{$settings->theme|escape}/images/no-photo.svg{/if}" media="(max-width: 600px)">
-                                    <img src="{if $s->image}{$s->image|resize_banners:1080:1080}{else}design/{$settings->theme|escape}/images/no-photo.svg{/if}" alt="{$s->alt|escape}" class="img-cover" width="1080" height="1080" loading="{if $s@index == 0}eager{else}lazy{/if}">
-                                </picture>
+                                <img src="{if $s->image}{$s->image|resize_banners:1080:1080}{else}design/{$settings->theme|escape}/images/no-photo.svg{/if}" 
+                                     alt="{$s->alt|escape|default:'Слайдер'}" 
+                                     class="img-cover" 
+                                     width="1080" 
+                                     height="1080" 
+                                     loading="{if $s@index == 0}eager{else}lazy{/if}">
                                 </div>
 
                         </div>
