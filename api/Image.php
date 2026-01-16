@@ -194,18 +194,12 @@ class Image extends Turbo
     }
 
     /**
-     * Генерирует оптимизированный img с WebP, lazy-loading, width/height
+     * Генерирует оптимизированный img с lazy-loading, width/height
      */
     public function renderImage($url, $alt, $width = null, $height = null, $lazy = true, $class = null) {
         $loading = $lazy ? 'lazy' : 'eager';
         
-        // WebP версия
-        $webpUrl = str_replace(['.jpg', '.png', '.jpeg'], '.webp', $url);
-        
-        $html = '<picture>';
-        $html .= '<source srcset="' . htmlspecialchars($webpUrl) . '" type="image/webp">';
-        $html .= '<source srcset="' . htmlspecialchars($url) . '">';
-        $html .= '<img src="' . htmlspecialchars($url) . '" ';
+        $html = '<img src="' . htmlspecialchars($url) . '" ';
         $html .= 'alt="' . htmlspecialchars($alt) . '" ';
         $html .= 'title="' . htmlspecialchars($alt) . '" ';
         
@@ -214,7 +208,6 @@ class Image extends Turbo
         if ($height) $html .= 'height="' . intval($height) . '" ';
         
         $html .= 'loading="' . $loading . '">';
-        $html .= '</picture>';
         
         return $html;
     }
