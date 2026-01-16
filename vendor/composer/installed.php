@@ -3,7 +3,7 @@
         'name' => 'turbo-cms/turboshop',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '54356b657ae3910d53e7a6d68bd5b9b1f023017a',
+        'reference' => '1c101b13d4584338628819022c5a7a2c322b16a1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -100,7 +100,7 @@
         'turbo-cms/turboshop' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '54356b657ae3910d53e7a6d68bd5b9b1f023017a',
+            'reference' => '1c101b13d4584338628819022c5a7a2c322b16a1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

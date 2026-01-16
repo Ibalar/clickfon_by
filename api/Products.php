@@ -79,7 +79,8 @@ class Products extends Turbo
         }
 
         if (isset($filter['in_stock'])) {
-            $inStockFilter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', (int) $filter['in_stock']);
+            // Use denormalized has_stock field instead of expensive subquery
+            $inStockFilter = $this->db->placehold('AND p.has_stock = ?', (int) $filter['in_stock']);
         }
 
         if (isset($filter['visible'])) {
@@ -89,40 +90,70 @@ class Products extends Turbo
         $currencies = $this->money->getCurrencies(['enabled' => 1]);
         $currency = reset($currencies);
 
-        $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.position DESC';
+        // Use denormalized has_stock field instead of expensive nested SELECT
+        // This eliminates 20+ subqueries per page load
+        $order = 'p.has_stock DESC, p.position DESC';
 
         if (!empty($filter['sort'])) {
             switch ($filter['sort']) {
                 case 'position':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.position DESC';
+                    // Use denormalized has_stock field
+                    $order = 'p.has_stock DESC, p.position DESC';
                     break;
                 case 'name':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name';
+                    // Use denormalized has_stock field
+                    $order = 'p.has_stock DESC, p.name ASC';
                     break;
                 case 'name_desc':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name DESC';
-                    break;
-                case 'name_desc':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name DESC';
+                    // Use denormalized has_stock field
+                    $order = 'p.has_stock DESC, p.name DESC';
                     break;
                 case 'price':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, (SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1)';
+                    // Use denormalized min_price with currency conversion if needed
+                    // Convert min_price to base currency for proper sorting
+                    if ($currency->id > 0) {
+                        $order = $this->db->placehold(
+                            'p.has_stock DESC, 
+                            IF((p.min_price_currency_id != ? AND p.min_price_currency_id > 0), 
+                                (p.min_price * (SELECT rate_to FROM __currencies WHERE id = p.min_price_currency_id) / 
+                                 (SELECT rate_from FROM __currencies WHERE id = p.min_price_currency_id)), 
+                                p.min_price) ASC',
+                            $currency->id
+                        );
+                    } else {
+                        $order = 'p.has_stock DESC, p.min_price ASC';
+                    }
                     break;
                 case 'price_desc':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, (SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1) DESC';
+                    // Use denormalized min_price with currency conversion if needed
+                    if ($currency->id > 0) {
+                        $order = $this->db->placehold(
+                            'p.has_stock DESC, 
+                            IF((p.min_price_currency_id != ? AND p.min_price_currency_id > 0), 
+                                (p.min_price * (SELECT rate_to FROM __currencies WHERE id = p.min_price_currency_id) / 
+                                 (SELECT rate_from FROM __currencies WHERE id = p.min_price_currency_id)), 
+                                p.min_price) DESC',
+                            $currency->id
+                        );
+                    } else {
+                        $order = 'p.has_stock DESC, p.min_price DESC';
+                    }
                     break;
                 case 'created':
+                    // Keep as is - no optimization needed
                     $order = 'p.created DESC';
                     break;
                 case 'random':
+                    // Keep as is - no optimization needed
                     $order = 'RAND()';
                     break;
                 case 'rating':
-                    $order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.rating DESC, p.position DESC';
+                    // Use denormalized has_stock field
+                    $order = 'p.has_stock DESC, p.rating DESC, p.position DESC';
                     break;
                 case 'rate':
-                    // Use denormalized avg_rating field instead of expensive subquery
-                    $order = "IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.avg_rating DESC, p.position DESC";
+                    // Use denormalized avg_rating and has_stock fields
+                    $order = 'p.has_stock DESC, p.avg_rating DESC, p.position DESC';
                     break;
             }
         }
@@ -183,6 +214,10 @@ class Products extends Turbo
                 p.meta_description, 
                 p.avg_rating,
                 p.total_comments,
+                p.min_price,
+                p.min_price_currency_id,
+                p.has_stock,
+                p.has_variants,
                 b.name AS brand,
                 b.url AS brand_url,
                 $langSql->fields
@@ -301,7 +336,8 @@ class Products extends Turbo
         }
 
         if (isset($filter['in_stock'])) {
-            $inStockFilter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) =?', (int) $filter['in_stock']);
+            // Use denormalized has_stock field instead of expensive subquery
+            $inStockFilter = $this->db->placehold('AND p.has_stock = ?', (int) $filter['in_stock']);
         }
 
         if (isset($filter['discounted'])) {
@@ -408,6 +444,10 @@ class Products extends Turbo
                 p.last_modified,
                 p.avg_rating,
                 p.total_comments,
+                p.min_price,
+                p.min_price_currency_id,
+                p.has_stock,
+                p.has_variants,
                 $langSql->fields
             FROM __products AS p
                 $langSql->join
