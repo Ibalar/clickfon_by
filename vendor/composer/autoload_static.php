@@ -64,6 +64,16 @@ class ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'S' =>
+        array (
+            'Sunra\\PhpSimple\\HtmlDomParser' =>
+            array (
+                0 => __DIR__ . '/..' . '/sunra/php-simple-html-dom-parser/Src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PclZip' => __DIR__ . '/..' . '/chamilo/pclzip/pclzip.lib.php',
@@ -79,6 +89,7 @@ class ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitb15bfaa714ba5a1b7aa0bbc57f92d5d0::$classMap;
 
         }, null, ClassLoader::class);

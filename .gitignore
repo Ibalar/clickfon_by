@@ -81,6 +81,7 @@ turbo/.passwd
 
 # === БАЗА ДАННЫХ ===
 *.sql
+!db_*_migration.sql
 *.sql.gz
 *.dump
 database.sqlite
