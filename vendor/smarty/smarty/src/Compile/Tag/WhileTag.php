@@ -22,8 +22,7 @@ class WhileTag extends Base {
 	 * @return string compiled code
 	 * @throws \Smarty\CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		$compiler->loopNesting++;
 
 		if ($compiler->tag_nocache) {

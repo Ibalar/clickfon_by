@@ -37,8 +37,9 @@ class SpecialVariableCompiler extends Base {
 	 * @return string compiled code
 	 * @throws CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
+
+		$compiler->has_code = true;
 
 		$_index = preg_split("/\]\[/", substr($parameter, 1, strlen($parameter) - 2));
 		$variable = smarty_strtolower_ascii($compiler->getId($_index[0]));
@@ -128,7 +129,5 @@ class SpecialVariableCompiler extends Base {
 			}
 			return $compiled_ref;
 		}
-
-		return '';
 	}
 }

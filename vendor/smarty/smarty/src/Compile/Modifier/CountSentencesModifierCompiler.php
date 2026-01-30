@@ -6,6 +6,8 @@ namespace Smarty\Compile\Modifier;
  * Name:     count_sentences
  * Purpose:  count the number of sentences in a text
  *
+ * @link   https://www.smarty.net/manual/en/language.modifier.count.paragraphs.php
+ *          count_sentences (Smarty online manual)
  * @author Uwe Tews
  */
 

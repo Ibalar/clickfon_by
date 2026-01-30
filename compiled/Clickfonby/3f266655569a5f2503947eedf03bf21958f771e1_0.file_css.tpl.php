@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 21:46:05
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:43
   from 'file:head/css.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a876dd47d56_37608006',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed71a4a06_93789570',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a876dd47d56_37608006 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed71a4a06_93789570 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\head';
 ?><!-- bootstrap 5 -->
 <link rel="stylesheet" href="design/<?php echo htmlspecialchars((string)$_smarty_tpl->getValue('settings')->theme, ENT_QUOTES, 'UTF-8', true);?>

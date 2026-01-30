@@ -22,8 +22,7 @@ class IfTag extends Base {
 	 * @return string compiled code
 	 * @throws \Smarty\CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 
 		if ($compiler->tag_nocache) {
 			// push a {nocache} tag onto the stack to prevent caching of this block

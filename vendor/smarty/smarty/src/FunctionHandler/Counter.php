@@ -13,6 +13,8 @@ use Smarty\Template;
  * @param Template $template template object
  *
  * @return string|null
+ *@link   https://www.smarty.net/manual/en/language.function.counter.php {counter}
+ *         (Smarty online manual)
  *
  * @author Monte Ohrt <monte at ohrt dot com>
  */

@@ -6,6 +6,7 @@ namespace Smarty\Compile\Modifier;
  * Name:     lower
  * Purpose:  convert string to uppercase
  *
+ * @link   https://www.smarty.net/manual/en/language.modifier.upper.php lower (Smarty online manual)
  * @author Uwe Tews
  */
 

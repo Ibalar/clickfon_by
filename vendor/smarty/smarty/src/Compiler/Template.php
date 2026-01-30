@@ -185,6 +185,13 @@ class Template extends BaseCompiler {
 	public $prefixCodeStack = [];
 
 	/**
+	 * Tag has compiled code
+	 *
+	 * @var bool
+	 */
+	public $has_code = false;
+
+	/**
 	 * A variable string was compiled
 	 *
 	 * @var bool
@@ -313,12 +320,6 @@ class Template extends BaseCompiler {
 	 */
 	private $noCacheStackDepth = 0;
 
-	/**
-	 * disabled auto-escape (when set to true, the next variable output is not auto-escaped)
-	 *
-	 * @var boolean
-	 */
-	private $raw_output = false;
 
 	/**
 	 * Initialize compiler
@@ -374,7 +375,7 @@ class Template extends BaseCompiler {
 	 * @throws CompilerException
 	 * @throws Exception
 	 */
-	public function compileTemplateSource(\Smarty\Template $template, ?\Smarty\Compiler\Template $parent_compiler = null) {
+	public function compileTemplateSource(\Smarty\Template $template, \Smarty\Compiler\Template $parent_compiler = null) {
 		try {
 			// save template object in compiler class
 			$this->template = $template;
@@ -409,37 +410,21 @@ class Template extends BaseCompiler {
 			}
 			// get template source
 			if (!empty($this->template->getSource()->components)) {
-
-				$_compiled_code = '<?php $_smarty_tpl->getInheritance()->init($_smarty_tpl, true); ?>';
-
-				$i = 0;
-				$reversed_components = array_reverse($this->template->getSource()->components);
-				foreach ($reversed_components as $source) {
-					$i++;
-					if ($i === count($reversed_components)) {
-						$_compiled_code .= '<?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl); ?>';
-					}
-					$_compiled_code .= $this->compileTag(
-						'include',
-						[
-							var_export($source->resource, true),
-							['scope' => 'parent'],
-						]
-					);
-				}
-				$_compiled_code = $this->smarty->runPostFilters($_compiled_code, $this->template);
+				// we have array of inheritance templates by extends: resource
+				// generate corresponding source code sequence
+				$_content =
+					ExtendsTag::extendsSourceArrayCode($this->template);
 			} else {
 				// get template source
 				$_content = $this->template->getSource()->getContent();
-				$_compiled_code = $this->smarty->runPostFilters(
-					$this->doCompile(
-						$this->smarty->runPreFilters($_content, $this->template),
-						true
-					),
-					$this->template
-				);
 			}
-
+			$_compiled_code = $this->smarty->runPostFilters(
+				$this->doCompile(
+					$this->smarty->runPreFilters($_content, $this->template),
+					true
+				),
+				$this->template
+			);
 		} catch (\Exception $e) {
 			if ($this->smarty->debugging) {
 				$this->smarty->getDebug()->end_compile($this->template);
@@ -505,7 +490,7 @@ class Template extends BaseCompiler {
 	 *
 	 * @return string
 	 */
-	public function triggerTagNoCache($variable): void {
+	public function compileVariable($variable) {
 		if (!strpos($variable, '(')) {
 			// not a variable variable
 			$var = trim($variable, '\'');
@@ -516,6 +501,7 @@ class Template extends BaseCompiler {
 					false
 				)->isNocache();
 		}
+		return '$_smarty_tpl->getValue(' . $variable . ')';
 	}
 
 	/**
@@ -664,7 +650,7 @@ class Template extends BaseCompiler {
 		$script = null;
 		$cacheable = true;
 
-		$result = \call_user_func_array(
+		$result = call_user_func_array(
 			$defaultPluginHandlerFunc,
 			[
 				$tag,
@@ -701,8 +687,7 @@ class Template extends BaseCompiler {
 	 *
 	 * @return string
 	 */
-	public function appendCode(string $left, string $right): string
-	{
+	public function appendCode($left, $right) {
 		if (preg_match('/\s*\?>\s?$/D', $left) && preg_match('/^<\?php\s+/', $right)) {
 			$left = preg_replace('/\s*\?>\s?$/D', "\n", $left);
 			$left .= preg_replace('/^<\?php\s+/', '', $right);
@@ -1078,7 +1063,7 @@ class Template extends BaseCompiler {
 		$prefixArray = array_merge($this->prefix_code, array_pop($this->prefixCodeStack));
 		$this->prefixCodeStack[] = [];
 		foreach ($prefixArray as $c) {
-			$code = $this->appendCode($code, (string) $c);
+			$code = $this->appendCode($code, $c);
 		}
 		$this->prefix_code = [];
 		return $code;
@@ -1089,10 +1074,12 @@ class Template extends BaseCompiler {
 	}
 
 	public function compileChildBlock() {
+		$this->has_code = true;
 		return $this->blockCompiler->compileChild($this);
 	}
 
 	public function compileParentBlock() {
+		$this->has_code = true;
 		return $this->blockCompiler->compileParent($this);
 	}
 
@@ -1109,6 +1096,8 @@ class Template extends BaseCompiler {
 	 */
 	private function compileTag2($tag, $args, $parameter) {
 		// $args contains the attributes parsed and compiled by the lexer/parser
+		// assume that tag does compile into code, but creates no HTML output
+		$this->has_code = true;
 
 		$this->handleNocacheFlag($args);
 
@@ -1117,10 +1106,12 @@ class Template extends BaseCompiler {
 			if (!isset($this->smarty->security_policy) || $this->smarty->security_policy->isTrustedTag($tag, $this)) {
 				$this->tag_nocache = $this->tag_nocache | !$tagCompiler->isCacheable();
 				$_output = $tagCompiler->compile($args, $this, $parameter);
-				if (!empty($parameter['modifierlist'])) {
-					throw new CompilerException('No modifiers allowed on ' . $tag);
+				if ($_output !== false) {
+					if (!empty($parameter['modifierlist'])) {
+						throw new CompilerException('No modifiers allowed on ' . $tag);
+					}
+					return $this->has_code && $_output !== true ? $_output : null;
 				}
-				return $_output;
 			}
 		}
 
@@ -1133,7 +1124,8 @@ class Template extends BaseCompiler {
 
 			$args['_attr']['name'] = "'{$tag}'";
 			$tagCompiler = $this->getTagCompiler('call');
-			return $tagCompiler === null ? false : $tagCompiler->compile($args, $this, $parameter);
+			$_output = $tagCompiler === null ? false : $tagCompiler->compile($args, $this, $parameter);
+			return $this->has_code ? $_output : null;
 		}
 
 		// remaining tastes: (object-)function, (object-function-)block, custom-compiler
@@ -1146,12 +1138,12 @@ class Template extends BaseCompiler {
 		}
 
 		// check if tag is a function
-		if ($this->smarty->getFunctionHandler($tag)) {
-			if (!isset($this->smarty->security_policy) || $this->smarty->security_policy->isTrustedTag($tag, $this)) {
+		if ($this->smarty->getFunctionHandler($base_tag)) {
+			if (!isset($this->smarty->security_policy) || $this->smarty->security_policy->isTrustedTag($base_tag, $this)) {
 				return (new \Smarty\Compile\PrintExpressionCompiler())->compile(
 					['nofilter'], // functions are never auto-escaped
 					$this,
-					['value' =>	$this->compileFunctionCall($tag, $args, $parameter)]
+					['value' =>	$this->compileFunctionCall($base_tag, $args, $parameter)]
 				);
 			}
 		}
@@ -1164,16 +1156,16 @@ class Template extends BaseCompiler {
 		}
 
 		// the default plugin handler is a handler of last resort, it may also handle not specifically registered tags.
-		if ($callback = $this->getPluginFromDefaultHandler($tag, Smarty::PLUGIN_COMPILER)) {
+		if ($callback = $this->getPluginFromDefaultHandler($base_tag, Smarty::PLUGIN_COMPILER)) {
 			if (!empty($parameter['modifierlist'])) {
-				throw new CompilerException('No modifiers allowed on ' . $tag);
+				throw new CompilerException('No modifiers allowed on ' . $base_tag);
 			}
 			$tagCompiler = new \Smarty\Compile\Tag\BCPluginWrapper($callback);
 			return $tagCompiler->compile($args, $this, $parameter);
 		}
 
 		if ($this->getPluginFromDefaultHandler($base_tag, Smarty::PLUGIN_FUNCTION)) {
-			return $this->defaultHandlerFunctionCallCompiler->compile($args, $this, $parameter, $tag, $tag);
+			return $this->defaultHandlerFunctionCallCompiler->compile($args, $this, $parameter, $tag, $base_tag);
 		}
 
 		if ($this->getPluginFromDefaultHandler($base_tag, Smarty::PLUGIN_BLOCK)) {
@@ -1280,10 +1272,9 @@ class Template extends BaseCompiler {
 		}
 		// call post compile callbacks
 		foreach ($this->postCompileCallbacks as $cb) {
-			$callbackFunction = $cb[0];
-			$parameters = $cb;
-			$parameters[0] = $this;
-			$callbackFunction(...$parameters);
+			$parameter = $cb;
+			$parameter[0] = $this;
+			call_user_func_array($cb[0], $parameter);
 		}
 		// return compiled code
 		return $this->prefixCompiledCode . $this->parser->retvalue . $this->postfixCompiledCode;
@@ -1491,22 +1482,5 @@ class Template extends BaseCompiler {
 	 */
 	public function getTagStack(): array {
 		return $this->_tag_stack;
-	}
-
-	/**
-	 * Should the next variable output be raw (true) or auto-escaped (false)
-	 * @return bool
-	 */
-	public function isRawOutput(): bool {
-		return $this->raw_output;
-	}
-
-	/**
-	 * Should the next variable output be raw (true) or auto-escaped (false)
-	 * @param bool $raw_output
-	 * @return void
-	 */
-	public function setRawOutput(bool $raw_output): void {
-		$this->raw_output = $raw_output;
 	}
 }

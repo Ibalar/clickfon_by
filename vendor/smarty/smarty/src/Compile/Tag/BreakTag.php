@@ -52,7 +52,7 @@ class BreakTag extends Base {
 	 * @return string compiled code
 	 * @throws \Smarty\CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = array(), $tag = null, $function = null): string
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = array(), $tag = null, $function = null)
 	{
 		[$levels, $foreachLevels] = $this->checkLevels($args, $compiler);
 		$output = "<?php ";

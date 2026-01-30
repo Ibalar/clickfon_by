@@ -24,8 +24,7 @@ class BCPluginWrapper extends Base {
 	/**
 	 * @inheritDoc
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		return call_user_func($this->callback, $this->getAttributes($compiler, $args), $compiler->getSmarty());
 	}
 }

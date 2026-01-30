@@ -47,8 +47,9 @@ class PrintExpressionCompiler extends Base {
 	 * @return string
 	 * @throws \Smarty\Exception
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
+
+		$compiler->has_code = true;
 
 		// check and get attributes
 		$_attr = $this->getAttributes($compiler, $args);
@@ -82,13 +83,12 @@ class PrintExpressionCompiler extends Base {
 					$output = $compiler->compileModifier($modifierlist, $output);
 				}
 
-				if ($compiler->getTemplate()->getSmarty()->escape_html && !$compiler->isRawOutput()) {
+				if ($compiler->getTemplate()->getSmarty()->escape_html) {
 					$output = "htmlspecialchars((string) ({$output}), ENT_QUOTES, '" . addslashes(\Smarty\Smarty::$_CHARSET) . "')";
 				}
 
 			}
 			$output = "<?php echo {$output};?>\n";
-			$compiler->setRawOutput(false);
 		}
 		return $output;
 	}

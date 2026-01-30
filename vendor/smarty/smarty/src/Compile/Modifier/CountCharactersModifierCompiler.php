@@ -6,6 +6,8 @@ namespace Smarty\Compile\Modifier;
  * Name:     count_characters
  * Purpose:  count the number of characters in a text
  *
+ * @link   https://www.smarty.net/manual/en/language.modifier.count.characters.php count_characters (Smarty online
+ *         manual)
  * @author Uwe Tews
  */
 

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:42
   from 'file:loading/sale.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f3c7dd8_91779540',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed6f3b685_61961079',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:products/grid_tab.tpl' => 1,
   ),
 ))) {
-function content_696a2a0f3c7dd8_91779540 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed6f3b685_61961079 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\loading';
 echo $_smarty_tpl->getSmarty()->getFunctionHandler('get_products')->handle(array('discounted'=>1,'var'=>'discounted_products','limit'=>$_smarty_tpl->getValue('theme_settings')->products_tab_products_limit), $_smarty_tpl);?>
 

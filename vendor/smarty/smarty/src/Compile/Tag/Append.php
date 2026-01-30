@@ -35,8 +35,8 @@ class Append extends Assign
      * @return string compiled code
      * @throws \Smarty\CompilerException
      */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = array(), $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = array(), $tag = null, $function = null)
+    {
 
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);

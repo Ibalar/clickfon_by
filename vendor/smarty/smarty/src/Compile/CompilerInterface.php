@@ -17,10 +17,10 @@ interface CompilerInterface {
 	 * @param \Smarty\Compiler\Template $compiler compiler object
 	 * @param array $parameter array with compilation parameter
 	 *
-	 * @return string compiled code as a string
+	 * @return bool|string compiled code or true if no code has been compiled
 	 * @throws \Smarty\CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string;
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null);
 
 	public function isCacheable(): bool;
 }

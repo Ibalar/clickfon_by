@@ -33,13 +33,3 @@ and 480 for $height, the result is:
 
 ## Source code
 - [Smarty repository at GitHub](https://github.com/smarty-php/smarty)
-
-## Sponsors
-
-### <img src="img/iwink-logo.svg" alt="iWink logo" width="100">
-
-[iWink](https://www.iwink.nl/), fullservice digital agency
-
-### <img src="img/temma-logo.svg" alt="Temma logo" width="100">
-
-[Temma](https://www.temma.net/), the MVC framework based on Smarty

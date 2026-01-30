@@ -20,8 +20,7 @@ class ElseTag extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		[$nesting, $compiler->tag_nocache] = $this->closeTag($compiler, ['if', 'elseif']);
 		$this->openTag($compiler, 'else', [$nesting, $compiler->tag_nocache]);
 		return '<?php } else { ?>';

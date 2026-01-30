@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 22:42:30
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:42
   from 'file:main/slider.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a94a6bc0df3_51710213',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed6c17142_73599558',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a94a6bc0df3_51710213 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed6c17142_73599558 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\main';
 echo $_smarty_tpl->getSmarty()->getFunctionHandler('get_banner')->handle(array('var'=>'big_banners','group'=>$_smarty_tpl->getValue('theme_settings')->big_banners_id), $_smarty_tpl);?>
 

@@ -25,15 +25,14 @@ class SectionClose extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		$compiler->loopNesting--;
 
 		[$openTag, $nocache_pushed] = $this->closeTag($compiler, ['section', 'sectionelse']);
 
 		if ($nocache_pushed) {
 			// pop the pushed virtual nocache tag
-			$this->closeTag($compiler, 'nocache');
+			$this->closeTag('nocache');
 		}
 
 		$output = "<?php\n";

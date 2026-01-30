@@ -35,7 +35,6 @@ class DefaultExtension extends Base {
 			case 'lower': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\LowerModifierCompiler(); break;
 			case 'nl2br': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\Nl2brModifierCompiler(); break;
 			case 'noprint': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\NoPrintModifierCompiler(); break;
-			case 'raw': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\RawModifierCompiler(); break;
 			case 'round': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\RoundModifierCompiler(); break;
 			case 'str_repeat': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\StrRepeatModifierCompiler(); break;
 			case 'string_format': $this->modifiers[$modifier] = new \Smarty\Compile\Modifier\StringFormatModifierCompiler(); break;
@@ -114,6 +113,7 @@ class DefaultExtension extends Base {
 	 * Name:     spacify
 	 * Purpose:  add spaces between characters in a string
 	 *
+	 * @link   https://www.smarty.net/manual/en/language.modifier.spacify.php spacify (Smarty online manual)
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 *
 	 * @param string $string       input string
@@ -234,6 +234,7 @@ class DefaultExtension extends Base {
 	 *          - format: strftime format for output
 	 *          - default_date: default date if $string is empty
 	 *
+	 * @link   https://www.smarty.net/manual/en/language.modifier.date.format.php date_format (Smarty online manual)
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 *
 	 * @param string $string       input date string
@@ -320,7 +321,7 @@ class DefaultExtension extends Base {
 					break;
 				}
 				foreach ($var as $curr_key => $curr_val) {
-					$results .= '<br>' . str_repeat('&nbsp;', $depth * 2) . '<b>' . htmlspecialchars(strtr($curr_key, $_replace)) .
+					$results .= '<br>' . str_repeat('&nbsp;', $depth * 2) . '<b>' . strtr($curr_key, $_replace) .
 						'</b> =&gt; ' .
 						$this->smarty_modifier_debug_print_var($curr_val, $max, $length, ++$depth, $objects);
 					$depth--;
@@ -338,7 +339,7 @@ class DefaultExtension extends Base {
 				}
 				$objects[] = $var;
 				foreach ($object_vars as $curr_key => $curr_val) {
-					$results .= '<br>' . str_repeat('&nbsp;', $depth * 2) . '<b> -&gt;' . htmlspecialchars(strtr($curr_key, $_replace)) .
+					$results .= '<br>' . str_repeat('&nbsp;', $depth * 2) . '<b> -&gt;' . strtr($curr_key, $_replace) .
 						'</b> = ' . $this->smarty_modifier_debug_print_var($curr_val, $max, $length, ++$depth, $objects);
 					$depth--;
 				}
@@ -385,6 +386,7 @@ class DefaultExtension extends Base {
 	 * Name:     escape
 	 * Purpose:  escape string for output
 	 *
+	 * @link   https://www.smarty.net/docs/en/language.modifier.escape
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 *
 	 * @param string  $string        input string
@@ -652,6 +654,8 @@ class DefaultExtension extends Base {
 	 * Name:     regex_replace
 	 * Purpose:  regular expression search/replace
 	 *
+	 * @link   https://www.smarty.net/manual/en/language.modifier.regex.replace.php
+	 *          regex_replace (Smarty online manual)
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 *
 	 * @param string       $string  input string
@@ -699,6 +703,7 @@ class DefaultExtension extends Base {
 	 * Name:     replace
 	 * Purpose:  simple search/replace
 	 *
+	 * @link   https://www.smarty.net/manual/en/language.modifier.replace.php replace (Smarty online manual)
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 * @author Uwe Tews
 	 *
@@ -721,6 +726,7 @@ class DefaultExtension extends Base {
 	 *               optionally splitting in the middle of a word, and
 	 *               appending the $etc string or inserting $etc into the middle.
 	 *
+	 * @link   https://www.smarty.net/manual/en/language.modifier.truncate.php truncate (Smarty online manual)
 	 * @author Monte Ohrt <monte at ohrt dot com>
 	 *
 	 * @param string  $string      input string

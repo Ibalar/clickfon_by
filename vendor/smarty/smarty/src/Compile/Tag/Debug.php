@@ -29,8 +29,7 @@ class Debug extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		// check and get attributes, may trigger errors
 		$this->getAttributes($compiler, $args);
 

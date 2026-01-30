@@ -29,8 +29,7 @@ class SetfilterClose extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		$this->getAttributes($compiler, $args);
 
 		// reset variable filter to previous state
@@ -38,6 +37,8 @@ class SetfilterClose extends Base {
 			count($compiler->variable_filter_stack) ? array_pop($compiler->variable_filter_stack) : []
 		);
 
-		return '';
+		// this tag does not return compiled code
+		$compiler->has_code = false;
+		return true;
 	}
 }

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 21:46:05
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:43
   from 'file:main/brands.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a876dd20514_61988360',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed70dffe0_45468085',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a876dd20514_61988360 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed70dffe0_45468085 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\main';
 echo $_smarty_tpl->getSmarty()->getFunctionHandler('get_brands')->handle(array('var'=>'all_brands'), $_smarty_tpl);?>
 
@@ -44,9 +44,9 @@ brands" class="more color-666 fsz-13"> Смотреть все <i class="la la-a
                     <div class="logos">
                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getSmarty()->getModifierCallback('array_slice')($_smarty_tpl->getValue('all_brands'),0,$_smarty_tpl->getValue('theme_settings')->brands_main_limit), 'b');
-$foreach3DoElse = true;
+$foreach9DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('b')->value) {
-$foreach3DoElse = false;
+$foreach9DoElse = false;
 ?>
                         <a href="<?php echo $_smarty_tpl->getValue('lang_link');?>
 brands/<?php echo $_smarty_tpl->getValue('b')->url;?>

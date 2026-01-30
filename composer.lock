@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3741c9b39488fc0b9a8a6f9ee489e8c9",
+    "content-hash": "dbf57ad9594241ae0ef2d7e514167466",
     "packages": [
         {
             "name": "ca-dsgn/lessphp",
@@ -418,16 +418,16 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v5.7.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "73da7e90f302175a570662fcb0ba41f57b7a92ab"
+                "reference": "e161babbd49840de2ae7a5e358e59f52d66c1f0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/73da7e90f302175a570662fcb0ba41f57b7a92ab",
-                "reference": "73da7e90f302175a570662fcb0ba41f57b7a92ab",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/e161babbd49840de2ae7a5e358e59f52d66c1f0a",
+                "reference": "e161babbd49840de2ae7a5e358e59f52d66c1f0a",
                 "shasum": ""
             },
             "require": {
@@ -482,15 +482,9 @@
             "support": {
                 "forum": "https://github.com/smarty-php/smarty/discussions",
                 "issues": "https://github.com/smarty-php/smarty/issues",
-                "source": "https://github.com/smarty-php/smarty/tree/v5.7.0"
+                "source": "https://github.com/smarty-php/smarty/tree/v5.0.0"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/wisskid",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-11-19T21:36:38+00:00"
+            "time": "2024-03-25T11:28:59+00:00"
         },
         {
             "name": "sunra/php-simple-html-dom-parser",
@@ -638,5 +632,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

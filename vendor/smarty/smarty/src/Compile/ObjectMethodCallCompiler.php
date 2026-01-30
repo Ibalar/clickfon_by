@@ -39,8 +39,7 @@ class ObjectMethodCallCompiler extends Base {
 	 * @throws \Smarty\CompilerException
 	 * @throws \Smarty\Exception
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		// check and get attributes
 		$_attr = $this->getAttributes($compiler, $args);
 		unset($_attr['nocache']);

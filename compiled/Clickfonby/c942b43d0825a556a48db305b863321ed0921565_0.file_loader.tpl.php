@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:43
   from 'file:loader/loader.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f51f956_47221419',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed71acc26_44030726',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f51f956_47221419 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed71acc26_44030726 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\loader';
 ?><div class="loader-wrap">
     <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">

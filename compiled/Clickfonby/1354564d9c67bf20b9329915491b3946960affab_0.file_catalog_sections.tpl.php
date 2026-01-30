@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:42
   from 'file:main/catalog_sections.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f03c0f8_98126114',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed6c57c11_16188400',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f03c0f8_98126114 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed6c57c11_16188400 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\main';
 ?><section class="tc-popular-cat-style1 pt-30 pb-50">
     <div class="container">

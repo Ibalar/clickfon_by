@@ -115,7 +115,7 @@ class Template extends TemplateBase {
 	public function __construct(
 		$template_resource,
 		Smarty $smarty,
-		?\Smarty\Data $_parent = null,
+		\Smarty\Data $_parent = null,
 		$_cache_id = null,
 		$_compile_id = null,
 		$_caching = null,
@@ -248,7 +248,7 @@ class Template extends TemplateBase {
 		$caching,
 		$cache_lifetime,
 		array $extra_vars = [],
-		?int $scope = null,
+		int $scope = null,
 		?string $currentDir = null
 	) {
 
@@ -462,7 +462,7 @@ class Template extends TemplateBase {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function createCodeFrame($content = '', $functions = '', $cache = false, ?\Smarty\Compiler\Template $compiler = null) {
+	public function createCodeFrame($content = '', $functions = '', $cache = false, \Smarty\Compiler\Template $compiler = null) {
 		return $this->getCodeFrameCompiler()->create($content, $functions, $cache, $compiler);
 	}
 
@@ -555,9 +555,6 @@ class Template extends TemplateBase {
 	 */
 	public function getStreamVariable($variable)
 	{
-
-		trigger_error("Using stream variables (\`\{\$foo:bar\}\`)is deprecated.", E_USER_DEPRECATED);
-
 		$_result = '';
 		$fp = fopen($variable, 'r+');
 		if ($fp) {
@@ -604,6 +601,7 @@ class Template extends TemplateBase {
 	 * @return bool cache status
 	 * @throws \Exception
 	 * @throws \Smarty\Exception
+	 * @link https://www.smarty.net/docs/en/api.is.cached.tpl
 	 *
 	 * @api  Smarty::isCached()
 	 */

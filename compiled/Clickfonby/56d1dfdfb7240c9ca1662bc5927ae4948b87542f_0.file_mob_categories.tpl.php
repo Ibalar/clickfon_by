@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:43
   from 'file:header/mob_categories.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f57bba1_02556475',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed72136b8_69747317',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,14 +20,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f57bba1_02556475 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed72136b8_69747317 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\header';
 $_smarty_tpl->getSmarty()->getRuntime('TplFunction')->registerTplFunctions($_smarty_tpl, array (
   'render_mobile_menu' => 
   array (
     'compiled_filepath' => 'D:\\osp_6.3.5\\home\\clickfon.local\\compiled\\Clickfonby\\56d1dfdfb7240c9ca1662bc5927ae4948b87542f_0.file_mob_categories.tpl.php',
     'uid' => '56d1dfdfb7240c9ca1662bc5927ae4948b87542f',
-    'call_name' => 'smarty_template_function_render_mobile_menu_1011814092696a2a0f559690_03969879',
+    'call_name' => 'smarty_template_function_render_mobile_menu_1034724897697c5ed71f59b7_21460438',
   ),
 ));
 if ($_smarty_tpl->getValue('theme_settings')->categories_header_type == '1') {?>
@@ -191,9 +191,9 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 >
 <?php }
 }
-/* smarty_template_function_render_mobile_menu_1011814092696a2a0f559690_03969879 */
-if (!function_exists('smarty_template_function_render_mobile_menu_1011814092696a2a0f559690_03969879')) {
-function smarty_template_function_render_mobile_menu_1011814092696a2a0f559690_03969879(\Smarty\Template $_smarty_tpl,$params) {
+/* smarty_template_function_render_mobile_menu_1034724897697c5ed71f59b7_21460438 */
+if (!function_exists('smarty_template_function_render_mobile_menu_1034724897697c5ed71f59b7_21460438')) {
+function smarty_template_function_render_mobile_menu_1034724897697c5ed71f59b7_21460438(\Smarty\Template $_smarty_tpl,$params) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\header';
 $params = array_merge(array('name'=>'render_mobile_menu','level'=>0,'parent_id'=>''), $params);
 foreach ($params as $key => $value) {
@@ -266,5 +266,5 @@ px;"></span>
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
             <?php
 }}
-/*/ smarty_template_function_render_mobile_menu_1011814092696a2a0f559690_03969879 */
+/*/ smarty_template_function_render_mobile_menu_1034724897697c5ed71f59b7_21460438 */
 }

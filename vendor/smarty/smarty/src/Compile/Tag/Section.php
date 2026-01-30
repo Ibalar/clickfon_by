@@ -82,8 +82,7 @@ class Section extends ForeachSection {
 	 * @throws \Smarty\CompilerException
 	 * @throws \Smarty\Exception
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		$compiler->loopNesting++;
 		// check and get attributes
 		$_attr = $this->getAttributes($compiler, $args);
@@ -99,7 +98,7 @@ class Section extends ForeachSection {
 
 		if ($compiler->tag_nocache) {
 			// push a {nocache} tag onto the stack to prevent caching of this block
-			$this->openTag($compiler, 'nocache');
+			$this->openTag('nocache');
 		}
 
 		$this->openTag($compiler, 'section', ['section', $compiler->tag_nocache]);

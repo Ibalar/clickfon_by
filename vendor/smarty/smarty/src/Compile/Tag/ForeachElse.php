@@ -20,8 +20,7 @@ class ForeachElse extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 
 		[$openTag, $nocache_pushed, $localVariablePrefix, $item, $restore] = $this->closeTag($compiler, ['foreach']);
 		$this->openTag($compiler, 'foreachelse', ['foreachelse', $nocache_pushed, $localVariablePrefix, $item, false]);

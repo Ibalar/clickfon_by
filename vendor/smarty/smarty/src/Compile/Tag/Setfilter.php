@@ -21,8 +21,7 @@ class Setfilter extends Base {
 	 *
 	 * @return string compiled code
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		$compiler->variable_filter_stack[] = $compiler->getSmarty()->getDefaultModifiers();
 
 		// The modifier_list is passed as an array of array's. The inner arrays have the modifier at index 0,
@@ -35,6 +34,8 @@ class Setfilter extends Base {
 
 		$compiler->getSmarty()->setDefaultModifiers($newList);
 
-		return '';
+		// this tag does not return compiled code
+		$compiler->has_code = false;
+		return true;
 	}
 }

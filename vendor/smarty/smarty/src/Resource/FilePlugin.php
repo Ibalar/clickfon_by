@@ -32,7 +32,7 @@ class FilePlugin extends BasePlugin {
 	 *
 	 * @throws Exception
 	 */
-	public function populate(Source $source, ?Template $_template = null) {
+	public function populate(Source $source, Template $_template = null) {
 
 		$source->uid = sha1(
 			$source->name . ($source->isConfig ? $source->getSmarty()->_joined_config_dir :
@@ -56,14 +56,11 @@ class FilePlugin extends BasePlugin {
 	 * @param Source $source source object
 	 */
 	public function populateTimestamp(Source $source) {
-		$path = $this->getFilePath($source->name, $source->getSmarty(), $source->isConfig);
-		if (!$source->exists) {
-			$source->exists = ($path !== false && is_file($path));
+		if (!$source->exists && $path = $this->getFilePath($source->name, $source->getSmarty(), $source->isConfig)) {
+			$source->timestamp = $source->exists = is_file($path);
 		}
-		if ($source->exists && $path !== false) {
+		if ($source->exists && $path) {
 			$source->timestamp = filemtime($path);
-		} else {
-			$source->timestamp = 0;
 		}
 	}
 

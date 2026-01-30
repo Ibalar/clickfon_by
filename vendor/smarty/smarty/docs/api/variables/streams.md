@@ -10,7 +10,4 @@ template.
 {$foo:bar}
 ```
 
-NB. Support for using streams to call variables is deprecated since Smarty v5.1 and will be removed
-in a future version. 
-
 See also [`Template Resources`](../resources.md)

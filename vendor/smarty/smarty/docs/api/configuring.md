@@ -12,27 +12,24 @@ Use `getTemplateDir()` to retrieve the configured paths.
 <?php
 
  // set a single directory where the config files are stored
-$smarty->setTemplateDir('./templates');
+$smarty->setTemplateDir('./config');
 
-// set multiple directories where templates are stored
-$smarty->setTemplateDir(['./templates', './templates_2', './templates_3']);
+// set multiple directories where config files are stored
+$smarty->setTemplateDir(['./config', './config_2', './config_3']);
 
-// add directory where templates files are stored to the current list of dirs
-$smarty->addTemplateDir('./templates_1');
+// add directory where config files are stored to the current list of dirs
+$smarty->addTemplateDir('./config_1');
 
 // add multiple directories to the current list of dirs
 $smarty->addTemplateDir([
-    './templates_2',
-    './templates_3',
+    './config_2',
+    './config_3',
 ]);
 
 // chaining of method calls
-$smarty->setTemplateDir('./templates')
-       ->addTemplateDir('./templates_1')
-       ->addTemplateDir('./templates_2');
-
-// insert a template dir before exising template dirs
-$smarty->prependTemplateDir('./more_important_templates')
+$smarty->setTemplateDir('./config')
+       ->addTemplateDir('./config_1')
+       ->addTemplateDir('./config_2');
 
 // get all directories where config files are stored
 $template_dirs = $smarty->getTemplateDir();
@@ -141,35 +138,6 @@ It's like Smarty magically adds `|escape` to every variable you use on a web pag
 Enable auto-escaping for HTML as follows:
 ```php
 $smarty->setEscapeHtml(true);
-```
-
-When auto-escaping is enabled, the `|escape` modifier's default mode (`html`) has no effect,
-to avoid double-escaping. It is possible to force it with the `force` mode.
-Other modes (`htmlall`, `url`, `urlpathinfo`, `quotes`, `javascript`) may be used
-with the result you might expect, without double-escaping.
-
-Even when auto-escaping is enabled, you might want to display the content of a variable without
-escaping it. To do so, use the `|raw` modifier.
-
-Examples (with auto-escaping enabled):
-```smarty
-{* these three statements are identical *}
-{$myVar}
-{$myVar|escape}
-{$myVar|escape:'html'}
-
-{* no double-escaping on these statements *}
-{$var|escape:'htmlall'}
-{$myVar|escape:'url'}
-{$myVar|escape:'urlpathinfo'}
-{$myVar|escape:'quotes'}
-{$myVar|escape:'javascript'}
-
-{* no escaping at all *}
-{$myVar|raw}
-
-{* force double-escaping *}
-{$myVar|escape:'force'}
 ```
 
 ## Disabling compile check

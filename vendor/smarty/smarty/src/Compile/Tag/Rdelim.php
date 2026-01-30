@@ -28,8 +28,7 @@ class Rdelim extends Ldelim {
 	 * @return string compiled code
 	 * @throws \Smarty\CompilerException
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
 		parent::compile($args, $compiler);
 		return $compiler->getTemplate()->getRightDelimiter();
 	}

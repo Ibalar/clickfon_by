@@ -11,12 +11,12 @@
         }
     ],
     "require": {
-        "smarty/smarty": "^5",
         "chamilo/pclzip": "^2.8",
         "mobiledetect/mobiledetectlib": "^4.8",
         "phpmailer/phpmailer": "^6.9",
         "matthiasmullie/minify": "*",
         "ca-dsgn/lessphp": "*",
-        "sunra/php-simple-html-dom-parser": "^1.5"
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "smarty/smarty": "5"
     }
 }

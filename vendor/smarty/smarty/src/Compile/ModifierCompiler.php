@@ -33,8 +33,9 @@ class ModifierCompiler extends Base {
 	 * @throws \Smarty\CompilerException
 	 * @throws \Smarty\Exception
 	 */
-	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null): string
-	{
+	public function compile($args, \Smarty\Compiler\Template $compiler, $parameter = [], $tag = null, $function = null) {
+
+		$compiler->has_code = true;
 
 		$output = $parameter['value'];
 
@@ -75,7 +76,7 @@ class ModifierCompiler extends Base {
 				}
 			}
 		}
-		return (string)$output;
+		return $output;
 	}
 
 	/**

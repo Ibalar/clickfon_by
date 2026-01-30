@@ -1,7 +1,7 @@
 # Getting started
 
 ## Requirements
-Smarty can be run with PHP 7.2 to PHP 8.5.
+Smarty can be run with PHP 7.2 to PHP 8.3.
 
 ## Installation
 Smarty can be installed with [Composer](https://getcomposer.org/).
@@ -25,15 +25,7 @@ Here's how you create an instance of Smarty in your PHP scripts:
 ```php
 <?php
 
-// Instantiated via composer
 require 'vendor/autoload.php';
-use Smarty\Smarty;
-$smarty = new Smarty();
-
-// or ...
-
-// Instantiated directly
-require("/path/to/smarty/libs/Smarty.class.php");
 use Smarty\Smarty;
 $smarty = new Smarty();
 ```

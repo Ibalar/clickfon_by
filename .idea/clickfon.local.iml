@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/turbo/design/js/filemanager/include" isTestSource="false" packagePrefix="FtpClient" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ca-dsgn/lessphp" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/chamilo/pclzip" />
@@ -13,6 +14,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/smarty/smarty" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sunra/php-simple-html-dom-parser" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

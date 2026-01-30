@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.2, created on 2026-01-16 15:07:43
+/* Smarty version 5.0.0, created on 2026-01-30 10:33:43
   from 'file:informers/cart_informer.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
-  'version' => '5.4.2',
-  'unifunc' => 'content_696a2a0f553dc3_37407128',
+  'version' => '5.0.0',
+  'unifunc' => 'content_697c5ed71eda47_97109113',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_696a2a0f553dc3_37407128 (\Smarty\Template $_smarty_tpl) {
+function content_697c5ed71eda47_97109113 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'D:\\osp_6.3.5\\home\\clickfon.local\\design\\Clickfonby\\html\\informers';
 ?><div id="cart-block-header">
     <?php if ($_smarty_tpl->getValue('cart')->total_products > 0) {?>
