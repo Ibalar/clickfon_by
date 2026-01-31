@@ -779,6 +779,7 @@ class Parsing extends Turbo
     {
         $isActiveFilter = '';
         $sourceFilter = '';
+        $sqlLimit = '';
 
         if (isset($filter['is_active'])) {
             $isActiveFilter = $this->db->placehold('AND is_active = ?', (int) $filter['is_active']);
@@ -786,6 +787,17 @@ class Parsing extends Turbo
 
         if (!empty($filter['parsing_source_id'])) {
             $sourceFilter = $this->db->placehold('AND parsing_source_id = ?', (int) $filter['parsing_source_id']);
+        }
+
+        if (!empty($filter['limit'])) {
+            $limit = max(1, (int) $filter['limit']);
+            $offset = 0;
+
+            if (!empty($filter['offset'])) {
+                $offset = max(0, (int) $filter['offset']);
+            }
+
+            $sqlLimit = $this->db->placehold('LIMIT ?, ?', $offset, $limit);
         }
 
         $query = $this->db->placehold(
@@ -796,7 +808,8 @@ class Parsing extends Turbo
             WHERE 1
                 $isActiveFilter
                 $sourceFilter
-            ORDER BY created_at DESC"
+            ORDER BY created_at DESC
+            $sqlLimit"
         );
 
         $this->db->query($query);
