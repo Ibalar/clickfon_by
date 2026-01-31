@@ -140,8 +140,19 @@
 <script>
 function parseSourceNow(sourceId) {
     if (confirm('Запустить парсинг этого источника?')) {
-        // Позже будет реализовано в Task 3.1.4 (AJAX функция)
-        alert('Парсинг будет реализован в следующей задаче');
+        fetch('/ajax/parsing_run_source.php?id=' + sourceId)
+          .then(r => r.json())
+          .then(data => {
+            if (data.status === 'ok') {
+              alert(`Успешно! Спарсено: ${data.parsed}, обновлено: ${data.updated}, ошибок: ${data.errors}`);
+              location.reload();
+            } else {
+              alert('Ошибка: ' + data.message);
+            }
+          })
+          .catch(error => {
+            alert('Ошибка сети: ' + error.message);
+          });
     }
 }
 
