@@ -147,8 +147,19 @@ function parseSourceNow(sourceId) {
 
 function deleteSource(sourceId) {
     if (confirm('Удалить источник и все связанные URL-ы?')) {
-        // Позже будет реализовано в Task 3.1.4 (AJAX функция)
-        alert('Удаление будет реализовано в следующей задаче');
+        fetch('/ajax/parsing_delete_source.php?id=' + sourceId)
+          .then(r => r.json())
+          .then(data => {
+            if (data.status === 'ok') {
+                alert('Источник удален');
+                location.reload();
+            } else {
+                alert('Ошибка: ' + data.message);
+            }
+          })
+          .catch(error => {
+            alert('Ошибка сети: ' + error.message);
+          });
     }
 }
 </script>
