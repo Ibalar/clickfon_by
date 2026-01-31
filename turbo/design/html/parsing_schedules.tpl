@@ -167,6 +167,7 @@
     </div>
 </div>
 
+{literal}
 <script>
     let editingScheduleId = null;
 
@@ -342,7 +343,9 @@
         }
     };
 </script>
+{/literal}
 
+{literal}
 <style>
     .admin-content {
         padding: 20px;
@@ -616,3 +619,4 @@
         font-size: 14px;
     }
 </style>
+{/literal}
