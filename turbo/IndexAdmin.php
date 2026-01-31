@@ -85,6 +85,7 @@ class IndexAdmin extends Turbo
         'ParsingSourcesAdmin'       => 'parsing',
         'ParsingSourceAdmin'        => 'parsing',
         'ParsingItemsAdmin'         => 'parsing',
+        'ParsingImportItemsAdmin'   => 'parsing',
         'ParsingSchedulesAdmin'     => 'parsing',
         'ParsingLogsAdmin'          => 'parsing'
     ];
