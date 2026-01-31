@@ -280,6 +280,28 @@
 								{/if}
 							</ul>
 						</li>
+				{if in_array('parsing', $manager->permissions)}
+					<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingSourcesAdmin', 'ParsingSourceAdmin', 'ParsingItemsAdmin', 'ParsingItemAdmin', 'ParsingSchedulesAdmin', 'ParsingLogsAdmin'))}active{/if}">
+						<a data-bs-target="#parsing" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingSourcesAdmin', 'ParsingSourceAdmin', 'ParsingItemsAdmin', 'ParsingItemAdmin', 'ParsingSchedulesAdmin', 'ParsingLogsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
+							<i class="align-middle" data-feather="download"></i>
+							<span class="align-middle">Парсинг</span>
+						</a>
+						<ul id="parsing" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingSourcesAdmin', 'ParsingSourceAdmin', 'ParsingItemsAdmin', 'ParsingItemAdmin', 'ParsingSchedulesAdmin', 'ParsingLogsAdmin'))}show{/if}" data-bs-parent="#sidebar">
+							<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingSourcesAdmin', 'ParsingSourceAdmin'))}active{/if}">
+								<a class="sidebar-link" href="index.php?module=ParsingSourcesAdmin">Источники парсинга</a>
+							</li>
+							<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingItemsAdmin', 'ParsingItemAdmin'))}active{/if}">
+								<a class="sidebar-link" href="index.php?module=ParsingItemsAdmin">URL-ы для парсинга</a>
+							</li>
+							<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingSchedulesAdmin'))}active{/if}">
+								<a class="sidebar-link" href="index.php?module=ParsingSchedulesAdmin">Расписания</a>
+							</li>
+							<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ParsingLogsAdmin'))}active{/if}">
+								<a class="sidebar-link" href="index.php?module=ParsingLogsAdmin">Логи парсинга</a>
+							</li>
+						</ul>
+					</li>
+				{/if}
 					{/if}
 					{if in_array('stats', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('StatsAdmin', 'ReportStatsAdmin', 'ReportStatsProdAdmin', 'CategoryStatsAdmin'))}active{/if}">
