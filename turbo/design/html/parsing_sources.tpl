@@ -137,6 +137,7 @@
     {/if}
 </div>
 
+{literal}
 <script>
 function parseSourceNow(sourceId) {
     if (confirm('Запустить парсинг этого источника?')) {
@@ -174,6 +175,7 @@ function deleteSource(sourceId) {
     }
 }
 </script>
+{/literal}
 
 <style>
 .admin-content {
