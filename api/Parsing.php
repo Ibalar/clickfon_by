@@ -959,25 +959,42 @@ class Parsing extends Turbo
         $itemFilter = '';
         $actionFilter = '';
         $productFilter = '';
+        $searchFilter = '';
+        $dateFromFilter = '';
+        $dateToFilter = '';
         $sqlLimit = '';
 
         if (!empty($filter['parsing_source_id'])) {
-            $sourceFilter = $this->db->placehold('AND parsing_source_id = ?', (int) $filter['parsing_source_id']);
+            $sourceFilter = $this->db->placehold('AND l.parsing_source_id = ?', (int) $filter['parsing_source_id']);
+        } elseif (!empty($filter['source_id'])) {
+            $sourceFilter = $this->db->placehold('AND l.parsing_source_id = ?', (int) $filter['source_id']);
         }
 
         if (!empty($filter['parsing_item_id'])) {
-            $itemFilter = $this->db->placehold('AND parsing_item_id = ?', (int) $filter['parsing_item_id']);
+            $itemFilter = $this->db->placehold('AND l.parsing_item_id = ?', (int) $filter['parsing_item_id']);
         }
 
         if (!empty($filter['action'])) {
-            $actionFilter = $this->db->placehold('AND action = ?', $filter['action']);
+            $actionFilter = $this->db->placehold('AND l.action = ?', $filter['action']);
         }
 
         if (!empty($filter['product_id'])) {
-            $productFilter = $this->db->placehold('AND product_id = ?', (int) $filter['product_id']);
+            $productFilter = $this->db->placehold('AND l.product_id = ?', (int) $filter['product_id']);
         }
 
-        $order = 'created_at DESC';
+        if (!empty($filter['search'])) {
+            $searchFilter = $this->db->placehold('AND l.message LIKE ?', '%' . $filter['search'] . '%');
+        }
+
+        if (!empty($filter['date_from'])) {
+            $dateFromFilter = $this->db->placehold('AND l.created_at >= ?', $filter['date_from']);
+        }
+
+        if (!empty($filter['date_to'])) {
+            $dateToFilter = $this->db->placehold('AND l.created_at <= ?', $filter['date_to'] . ' 23:59:59');
+        }
+
+        $order = 'l.created_at DESC';
         if (!empty($filter['order'])) {
             $order = $filter['order'];
         }
@@ -995,14 +1012,19 @@ class Parsing extends Turbo
 
         $query = $this->db->placehold(
             "SELECT 
-                id, parsing_source_id, parsing_item_id, product_id,
-                action, message, old_price, new_price, created_at
-            FROM __parsing_logs
+                l.id, l.parsing_source_id, l.parsing_item_id, l.product_id,
+                l.action, l.message, l.old_price, l.new_price, l.created_at,
+                s.name as source_name
+            FROM __parsing_logs l
+            LEFT JOIN __parsing_sources s ON s.id = l.parsing_source_id
             WHERE 1
                 $sourceFilter
                 $itemFilter
                 $actionFilter
                 $productFilter
+                $searchFilter
+                $dateFromFilter
+                $dateToFilter
             ORDER BY $order
             $sqlLimit"
         );
@@ -1010,6 +1032,66 @@ class Parsing extends Turbo
         $this->db->query($query);
 
         return $this->db->results();
+    }
+
+    /**
+     * Count Logs
+     */
+    public function countLogs($filter = [])
+    {
+        $sourceFilter = '';
+        $itemFilter = '';
+        $actionFilter = '';
+        $productFilter = '';
+        $searchFilter = '';
+        $dateFromFilter = '';
+        $dateToFilter = '';
+
+        if (!empty($filter['parsing_source_id'])) {
+            $sourceFilter = $this->db->placehold('AND parsing_source_id = ?', (int) $filter['parsing_source_id']);
+        } elseif (!empty($filter['source_id'])) {
+            $sourceFilter = $this->db->placehold('AND parsing_source_id = ?', (int) $filter['source_id']);
+        }
+
+        if (!empty($filter['parsing_item_id'])) {
+            $itemFilter = $this->db->placehold('AND parsing_item_id = ?', (int) $filter['parsing_item_id']);
+        }
+
+        if (!empty($filter['action'])) {
+            $actionFilter = $this->db->placehold('AND action = ?', $filter['action']);
+        }
+
+        if (!empty($filter['product_id'])) {
+            $productFilter = $this->db->placehold('AND product_id = ?', (int) $filter['product_id']);
+        }
+
+        if (!empty($filter['search'])) {
+            $searchFilter = $this->db->placehold('AND message LIKE ?', '%' . $filter['search'] . '%');
+        }
+
+        if (!empty($filter['date_from'])) {
+            $dateFromFilter = $this->db->placehold('AND created_at >= ?', $filter['date_from']);
+        }
+
+        if (!empty($filter['date_to'])) {
+            $dateToFilter = $this->db->placehold('AND created_at <= ?', $filter['date_to'] . ' 23:59:59');
+        }
+
+        $query = $this->db->placehold(
+            "SELECT COUNT(id) as count
+            FROM __parsing_logs
+            WHERE 1
+                $sourceFilter
+                $itemFilter
+                $actionFilter
+                $productFilter
+                $searchFilter
+                $dateFromFilter
+                $dateToFilter"
+        );
+
+        $this->db->query($query);
+        return $this->db->result('count');
     }
 
     /**
