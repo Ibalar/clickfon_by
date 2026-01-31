@@ -94,6 +94,11 @@
                         </td>
                         <td>
                             <div class="btn-group">
+                                <a href="?module=ParsingItemAdmin&id={$item->id}" 
+                                   class="btn btn-sm btn-dark" 
+                                   title="Редактировать">
+                                    ✎
+                                </a>
                                 <button class="btn btn-sm btn-info" 
                                         onclick="parseItemNow({$item->id})" 
                                         title="Переспарсить">
