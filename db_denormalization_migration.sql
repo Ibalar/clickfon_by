@@ -1,17 +1,17 @@
--- Migration: Add denormalized fields to __products table
+-- Migration: Add denormalized fields to t_products table
 -- This migration adds avg_rating and total_comments columns to reduce N+1 queries
 
 -- Add new columns to products table
-ALTER TABLE __products 
+ALTER TABLE t_products 
 ADD COLUMN avg_rating FLOAT DEFAULT 0.0 NOT NULL,
 ADD COLUMN total_comments INT DEFAULT 0 NOT NULL;
 
 -- Initialize the denormalized fields with current data
-UPDATE __products p 
+UPDATE t_products p 
 SET 
     avg_rating = COALESCE((
         SELECT AVG(rating) 
-        FROM __comments 
+        FROM t_comments 
         WHERE type = 'product' 
         AND object_id = p.id 
         AND approved = 1 
@@ -20,7 +20,7 @@ SET
     ), 0.0),
     total_comments = (
         SELECT COUNT(*) 
-        FROM __comments 
+        FROM t_comments 
         WHERE type = 'product' 
         AND object_id = p.id 
         AND approved = 1 
@@ -34,5 +34,5 @@ SET
 -- This approach is more reliable and portable across different MySQL configurations
 
 -- Add indexes for better performance
-CREATE INDEX idx_products_avg_rating ON __products(avg_rating);
-CREATE INDEX idx_products_total_comments ON __products(total_comments);
+CREATE INDEX idx_products_avg_rating ON t_products(avg_rating);
+CREATE INDEX idx_products_total_comments ON t_products(total_comments);

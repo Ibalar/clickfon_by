@@ -2,7 +2,7 @@
 -- Создание таблиц для управления парсингом цен с других сайтов
 
 -- Таблица источников парсинга
-CREATE TABLE IF NOT EXISTS `__parsing_sources` (
+CREATE TABLE IF NOT EXISTS `t_parsing_sources` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT 'Название источника',
   `base_url` VARCHAR(500) NOT NULL COMMENT 'Базовый URL источника',
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `__parsing_sources` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Источники парсинга цен';
 
 -- Таблица URL-ов для парсинга
-CREATE TABLE IF NOT EXISTS `__parsing_items` (
+CREATE TABLE IF NOT EXISTS `t_parsing_items` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parsing_source_id` INT(11) UNSIGNED NOT NULL COMMENT 'ID источника парсинга',
   `article_reference` VARCHAR(255) NOT NULL COMMENT 'Артикул товара (sku из variants)',
@@ -38,11 +38,11 @@ CREATE TABLE IF NOT EXISTS `__parsing_items` (
   KEY `idx_last_parsed_at` (`last_parsed_at`),
   UNIQUE KEY `idx_source_article` (`parsing_source_id`, `article_reference`),
   CONSTRAINT `fk_parsing_items_source` FOREIGN KEY (`parsing_source_id`) 
-    REFERENCES `__parsing_sources` (`id`) ON DELETE CASCADE
+    REFERENCES `t_parsing_sources` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='URL-ы товаров для парсинга';
 
 -- Таблица расписаний парсинга
-CREATE TABLE IF NOT EXISTS `__parsing_schedules` (
+CREATE TABLE IF NOT EXISTS `t_parsing_schedules` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parsing_source_id` INT(11) UNSIGNED NOT NULL COMMENT 'ID источника парсинга',
   `cron_expression` VARCHAR(100) NOT NULL COMMENT 'Cron-выражение',
@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS `__parsing_schedules` (
   KEY `idx_is_active` (`is_active`),
   KEY `idx_next_run_at` (`next_run_at`),
   CONSTRAINT `fk_parsing_schedules_source` FOREIGN KEY (`parsing_source_id`) 
-    REFERENCES `__parsing_sources` (`id`) ON DELETE CASCADE
+    REFERENCES `t_parsing_sources` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Расписания парсинга';
 
 -- Таблица логов парсинга
-CREATE TABLE IF NOT EXISTS `__parsing_logs` (
+CREATE TABLE IF NOT EXISTS `t_parsing_logs` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `parsing_source_id` INT(11) UNSIGNED DEFAULT NULL COMMENT 'ID источника парсинга',
   `parsing_item_id` INT(11) UNSIGNED DEFAULT NULL COMMENT 'ID item парсинга',
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `__parsing_logs` (
   KEY `idx_action` (`action`),
   KEY `idx_created_at` (`created_at`),
   CONSTRAINT `fk_parsing_logs_source` FOREIGN KEY (`parsing_source_id`) 
-    REFERENCES `__parsing_sources` (`id`) ON DELETE SET NULL,
+    REFERENCES `t_parsing_sources` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_parsing_logs_item` FOREIGN KEY (`parsing_item_id`) 
-    REFERENCES `__parsing_items` (`id`) ON DELETE SET NULL
+    REFERENCES `t_parsing_items` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Логи парсинга';
