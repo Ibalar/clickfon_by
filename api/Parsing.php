@@ -1156,7 +1156,7 @@ class Parsing extends Turbo
     /**
      * Validate Cron Expression
      */
-    private function validateCronExpression($expression)
+    public function validateCronExpression($expression)
     {
         $parts = explode(' ', trim($expression));
 
