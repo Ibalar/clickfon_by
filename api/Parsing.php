@@ -618,7 +618,7 @@ class Parsing extends Turbo
     /**
      * Parse URL for price and article
      */
-    private function parseUrl($url, $priceSelector, $articleSelector)
+    public function parseUrl($url, $priceSelector, $articleSelector)
     {
         $result = [
             'status' => 'error',
