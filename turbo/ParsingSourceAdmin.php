@@ -51,18 +51,27 @@ class ParsingSourceAdmin extends Turbo
 
     private function saveSource($source)
     {
+        // ОТЛАДКА: проверка POST-данных
+        error_log('POST data: ' . print_r($_POST, true));
+
         $data = [
-            'name' => $this->request->post('name', 'string'),
-            'base_url' => $this->request->post('base_url', 'string'),
-            'selector_price' => $this->request->post('selector_price', 'string'),
-            'selector_article' => $this->request->post('selector_article', 'string'),
-            'price_min_bound' => $this->request->post('price_min_bound', 'float'),
-            'price_max_bound' => $this->request->post('price_max_bound', 'float'),
-            'is_active' => $this->request->post('is_active', 'integer', 0)
+            'name' => $this->request->post('name'),
+            'base_url' => $this->request->post('base_url'),
+            'selector_price' => $this->request->post('selector_price'),
+            'selector_article' => $this->request->post('selector_article'),
+            'price_min_bound' => $this->request->post('price_min_bound') ? (float)$this->request->post('price_min_bound') : null,
+            'price_max_bound' => $this->request->post('price_max_bound') ? (float)$this->request->post('price_max_bound') : null,
+            'is_active' => $this->request->post('is_active') ? 1 : 0
         ];
+
+        // ОТЛАДКА: проверка распарсенных данных
+        error_log('Parsed data: ' . print_r($data, true));
 
         // Валидация
         $errors = $this->validateSourceData($data);
+
+        // ОТЛАДКА: проверка ошибок валидации
+        error_log('Validation errors: ' . print_r($errors, true));
         if (!empty($errors)) {
             return [
                 'success' => false,

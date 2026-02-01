@@ -23,6 +23,7 @@
     {/if}
 
     <form method="POST" class="admin-form">
+        <input type="hidden" name="session_id" value="{$smarty.session.id}">
         <fieldset>
             <legend>Основные параметры</legend>
 
