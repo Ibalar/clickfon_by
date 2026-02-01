@@ -205,6 +205,8 @@
 {if $mode == 'items_list'}
 {literal}
 <script>
+var AJAX_BASE_PATH = '/ajax/';
+
 function filterByStatus(status) {
     let url = '?module=ParsingItemsAdmin&source_id={/literal}{$source->id}{literal}';
     if (status) {
@@ -215,7 +217,7 @@ function filterByStatus(status) {
 
 function parseItemNow(itemId) {
     if (confirm('Переспарсить этот URL?')) {
-        fetch('/ajax/parsing_run_single_item.php?id=' + itemId)
+        fetch(AJAX_BASE_PATH + 'parsing_run_single_item.php?id=' + itemId)
           .then(r => r.json())
           .then(data => {
             if (data.status === 'ok') {
@@ -232,20 +234,36 @@ function parseItemNow(itemId) {
 }
 
 function deleteItem(itemId) {
-    if (confirm('Удалить этот URL?')) {
-        fetch('/ajax/parsing_delete_item.php?id=' + itemId)
-          .then(r => r.json())
-          .then(data => {
-            if (data.status === 'ok') {
-                location.reload();
-            } else {
-                alert('Ошибка: ' + data.message);
-            }
-          })
-          .catch(error => {
-            alert('Ошибка сети: ' + error.message);
-          });
+    if (!confirm('Вы уверены что хотите удалить этот URL?')) {
+        return;
     }
+
+    var ajaxUrl = (typeof AJAX_BASE_PATH !== 'undefined' ? AJAX_BASE_PATH : '/ajax/') + 'parsing_delete_item.php';
+
+    fetch(ajaxUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: 'id=' + encodeURIComponent(itemId) + '&source_id=' + encodeURIComponent({/literal}{$source->id}{literal})
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'ok') {
+            location.reload();
+        } else {
+            alert('Ошибка: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        alert('Ошибка сети: ' + error.message);
+    });
 }
 </script>
 {/literal}
