@@ -89,7 +89,7 @@ class Parsing extends Turbo
         $data = (array) $data;
 
         // Validation
-        if (empty($data['name']) || empty($data['base_url']) || empty($data['selector_price']) || empty($data['selector_article'])) {
+        if (empty($data['name']) || empty($data['base_url']) || empty($data['selector_price'])) {
             return false;
         }
 
@@ -108,9 +108,13 @@ class Parsing extends Turbo
             'name' => $data['name'],
             'base_url' => $data['base_url'],
             'selector_price' => $data['selector_price'],
-            'selector_article' => $data['selector_article'],
             'is_active' => (int) $data['is_active']
         ];
+
+        // Article selector is optional
+        if (isset($data['selector_article'])) {
+            $insertData['selector_article'] = $data['selector_article'];
+        }
 
         if (isset($data['price_min_bound'])) {
             $insertData['price_min_bound'] = $data['price_min_bound'];
@@ -485,8 +489,11 @@ class Parsing extends Turbo
                 $parsedPrice = $parseResult['price'];
                 $parsedArticle = $parseResult['article'];
 
-                // Verify article match
-                if ($parsedArticle && $parsedArticle != $item->article_reference) {
+                // Article verification is optional
+                // If article selector returned a value and it doesn't match - that's an error
+                // If article selector returned nothing - that's OK (ignore article)
+                if (!empty($parsedArticle) && $parsedArticle !== $item->article_reference) {
+                    // Article found on competitor page but doesn't match - error
                     $error = "Article mismatch: expected '{$item->article_reference}', got '{$parsedArticle}'";
                     $this->db->query(
                         "UPDATE __parsing_items SET status = 'error', last_error = ?, last_parsed_at = NOW() WHERE id = ?",
