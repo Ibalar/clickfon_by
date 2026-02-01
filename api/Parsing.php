@@ -534,6 +534,66 @@ class Parsing extends Turbo
     }
 
     /**
+     * Get Item (single parsing item)
+     */
+    public function getItem($id)
+    {
+        if (empty($id)) {
+            return false;
+        }
+
+        $query = $this->db->placehold(
+            "SELECT 
+                id, parsing_source_id, article_reference, url, 
+                parsed_price, status, last_error, last_parsed_at,
+                created_at, updated_at
+            FROM __parsing_items
+            WHERE id = ?
+            LIMIT 1",
+            (int) $id
+        );
+
+        $this->db->query($query);
+
+        return $this->db->result();
+    }
+
+    /**
+     * Update Item
+     */
+    public function updateItem($id, $data)
+    {
+        if (empty($id)) {
+            return false;
+        }
+
+        $data = (array) $data;
+
+        unset($data['id']);
+        unset($data['parsing_source_id']);
+        unset($data['article_reference']);
+        unset($data['created_at']);
+
+        if (empty($data)) {
+            return false;
+        }
+
+        try {
+            $query = $this->db->placehold(
+                "UPDATE __parsing_items SET ?% WHERE id = ? LIMIT 1",
+                $data,
+                (int) $id
+            );
+            $this->db->query($query);
+
+            return true;
+        } catch (Exception $e) {
+            $this->createLog(null, (int) $id, 'error', 'Failed to update item: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Delete Item
      */
     public function deleteItem($itemId)

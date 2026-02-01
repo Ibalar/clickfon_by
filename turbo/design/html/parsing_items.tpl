@@ -145,12 +145,13 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="?module=ParsingItemAdmin&id={$item->id}"
+                                    <a href="#"
                                        class="btn btn-sm btn-dark"
-                                       title="Редактировать">
+                                       onclick="return editItem({$item->id}, {$source->id}, '{$item->url|escape|escape:'javascript'}');"
+                                       title="Редактировать URL">
                                         ✎
                                     </a>
-                                    <button class="btn btn-sm btn-info"
+
                                             onclick="parseItemNow({$item->id})"
                                             title="Переспарсить">
                                         ▶️
@@ -203,6 +204,27 @@
 </div>
 
 {if $mode == 'items_list'}
+    <div id="editModal" class="edit-modal" style="display:none;">
+        <div class="edit-modal__content">
+            <span class="edit-modal__close" onclick="closeEditModal()">×</span>
+            <h2>Редактировать URL</h2>
+            <form id="editForm" onsubmit="return submitEditForm();">
+                <input type="hidden" id="editItemId" name="id">
+                <input type="hidden" id="editSourceId" name="source_id">
+
+                <div class="form-group">
+                    <label for="editUrl">URL:</label>
+                    <input type="url" id="editUrl" name="url" class="form-control" required>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {literal}
 <script>
 var AJAX_BASE_PATH = '/ajax/';
@@ -214,6 +236,72 @@ function filterByStatus(status) {
     }
     window.location.href = url;
 }
+
+function editItem(itemId, sourceId, currentUrl) {
+    document.getElementById('editItemId').value = itemId;
+    document.getElementById('editSourceId').value = sourceId;
+    document.getElementById('editUrl').value = currentUrl || '';
+
+    var modal = document.getElementById('editModal');
+    modal.style.display = 'block';
+
+    var input = document.getElementById('editUrl');
+    input.focus();
+    input.select();
+
+    return false;
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    return false;
+}
+
+function submitEditForm() {
+    var itemId = document.getElementById('editItemId').value;
+    var sourceId = document.getElementById('editSourceId').value;
+    var url = document.getElementById('editUrl').value;
+
+    if (!url || !url.trim()) {
+        alert('URL не может быть пустым');
+        return false;
+    }
+
+    fetch(AJAX_BASE_PATH + 'parsing_edit_item.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: 'id=' + encodeURIComponent(itemId) + '&url=' + encodeURIComponent(url) + '&source_id=' + encodeURIComponent(sourceId)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            closeEditModal();
+            location.reload();
+        } else {
+            alert('Ошибка: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        alert('Ошибка сети: ' + error.message);
+    });
+
+    return false;
+}
+
+window.addEventListener('click', function(event) {
+    var modal = document.getElementById('editModal');
+    if (event.target === modal) {
+        closeEditModal();
+    }
+});
 
 function parseItemNow(itemId) {
     if (confirm('Переспарсить этот URL?')) {
@@ -457,6 +545,55 @@ function deleteItem(itemId) {
 
 .text-danger {
     color: #dc3545;
+}
+
+.edit-modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.edit-modal__content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 4px;
+    position: relative;
+}
+
+.edit-modal__close {
+    color: #aaa;
+    position: absolute;
+    right: 12px;
+    top: 6px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.edit-modal__close:hover,
+.edit-modal__close:focus {
+    color: #000;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 </style>
 {/if}
