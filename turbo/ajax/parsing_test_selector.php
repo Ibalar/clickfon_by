@@ -21,7 +21,27 @@ if (!$turbo->managers->access('parsing')) {
     if (empty($url) || empty($selectorPrice) || empty($selectorArticle)) {
         $result = ['status' => 'error', 'message' => 'Missing required parameters'];
     } else {
+        // Validate selectors format first
+        $priceValidation = $turbo->parsing->validateSelectorPublic($selectorPrice);
+        $articleValidation = $turbo->parsing->validateSelectorPublic($selectorArticle);
+
+        // Add selector validation feedback
+        $validationFeedback = [];
+
+        if (!$priceValidation['valid']) {
+            $validationFeedback['price_selector'] = $priceValidation;
+        }
+
+        if (!$articleValidation['valid']) {
+            $validationFeedback['article_selector'] = $articleValidation;
+        }
+
         $priceResult = $turbo->parsing->testSelector($url, $selectorPrice);
+
+        // Add validation feedback to result
+        if (!empty($validationFeedback)) {
+            $priceResult['selector_validation'] = $validationFeedback;
+        }
 
         if ($priceResult['status'] !== 'success') {
             $result = [
@@ -30,8 +50,18 @@ if (!$turbo->managers->access('parsing')) {
                 'price' => null,
                 'article' => null
             ];
+
+            // Add validation warnings even if selector not found
+            if (!empty($validationFeedback)) {
+                $result['selector_validation'] = $validationFeedback;
+            }
         } else {
             $articleResult = $turbo->parsing->testSelector($url, $selectorArticle);
+
+            // Add validation feedback to article result
+            if (!empty($validationFeedback)) {
+                $articleResult['selector_validation'] = $validationFeedback;
+            }
 
             if ($articleResult['status'] !== 'success') {
                 $result = [
@@ -40,6 +70,11 @@ if (!$turbo->managers->access('parsing')) {
                     'price' => $priceResult['value'],
                     'article' => null
                 ];
+
+                // Add validation warnings even if selector not found
+                if (!empty($validationFeedback)) {
+                    $result['selector_validation'] = $validationFeedback;
+                }
             } else {
                 $priceValue = $priceResult['value'];
                 $articleValue = $articleResult['value'];
@@ -58,6 +93,12 @@ if (!$turbo->managers->access('parsing')) {
                         'article' => $articleValue,
                         'message' => 'Selectors found values successfully'
                     ];
+                }
+
+                // Add validation warnings to successful result too
+                if (!empty($validationFeedback)) {
+                    $result['selector_validation'] = $validationFeedback;
+                    $result['message'] .= ' (with selector format warnings)';
                 }
             }
         }
