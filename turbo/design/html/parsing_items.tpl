@@ -150,9 +150,10 @@
     {/if}
 </div>
 
+{literal}
 <script>
 function filterByStatus(status) {
-    let url = '?module=ParsingItemsAdmin&source_id={$source->id}';
+    let url = '?module=ParsingItemsAdmin&source_id={/literal}{$source->id}{literal}';
     if (status) {
         url += '&status=' + status;
     }
@@ -194,6 +195,7 @@ function deleteItem(itemId) {
     }
 }
 </script>
+{/literal}
 
 <style>
 .admin-content {
