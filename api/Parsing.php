@@ -4,6 +4,52 @@ require_once 'Turbo.php';
 
 class Parsing extends Turbo
 {
+    /**
+     * Validate CSS selector format
+     */
+    private function validateSelector($selector)
+    {
+        if (empty($selector)) {
+            return ['valid' => true];
+        }
+
+        $selector = trim($selector);
+
+        // Check for common mistakes - just a class name without dot or tag
+        if (preg_match('/^[a-zA-Z0-9_-]+$/', $selector)) {
+            // Looks like just a class name without dot or tag
+            // This is likely an error
+            return [
+                'valid' => false,
+                'message' => "Selector '$selector' looks like a class name. Did you mean '.$selector' (class) or 'tag.$selector' (tag with class)?",
+                'suggestions' => [
+                    ".$selector" => "Find any element with class '$selector'",
+                    "span.$selector" => "Find span with class '$selector'",
+                    "div.$selector" => "Find div with class '$selector'",
+                    "p.$selector" => "Find paragraph with class '$selector'"
+                ]
+            ];
+        }
+
+        // Valid selectors start with . # or letter (tag name)
+        if (!preg_match('/^[.#a-z]/i', $selector)) {
+            return [
+                'valid' => false,
+                'message' => "Selector must start with '.' (class), '#' (id), or tag name"
+            ];
+        }
+
+        return ['valid' => true];
+    }
+
+    /**
+     * Public wrapper for selector validation
+     */
+    public function validateSelectorPublic($selector)
+    {
+        return $this->validateSelector($selector);
+    }
+
     private $userAgents = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -98,6 +144,26 @@ class Parsing extends Turbo
             return false;
         }
 
+        // Validate price selector
+        $priceValidation = $this->validateSelector($data['selector_price']);
+        if (!$priceValidation['valid']) {
+            return [
+                'error' => 'Invalid price selector',
+                'details' => $priceValidation
+            ];
+        }
+
+        // Validate article selector if provided
+        if (!empty($data['selector_article'])) {
+            $articleValidation = $this->validateSelector($data['selector_article']);
+            if (!$articleValidation['valid']) {
+                return [
+                    'error' => 'Invalid article selector',
+                    'details' => $articleValidation
+                ];
+            }
+        }
+
         // Set defaults
         if (!isset($data['is_active'])) {
             $data['is_active'] = 1;
@@ -158,6 +224,28 @@ class Parsing extends Turbo
         // Validate URL if provided
         if (isset($data['base_url']) && !filter_var($data['base_url'], FILTER_VALIDATE_URL)) {
             return false;
+        }
+
+        // Validate price selector if provided
+        if (isset($data['selector_price'])) {
+            $priceValidation = $this->validateSelector($data['selector_price']);
+            if (!$priceValidation['valid']) {
+                return [
+                    'error' => 'Invalid price selector',
+                    'details' => $priceValidation
+                ];
+            }
+        }
+
+        // Validate article selector if provided
+        if (isset($data['selector_article'])) {
+            $articleValidation = $this->validateSelector($data['selector_article']);
+            if (!$articleValidation['valid']) {
+                return [
+                    'error' => 'Invalid article selector',
+                    'details' => $articleValidation
+                ];
+            }
         }
 
         if (empty($data)) {
@@ -761,7 +849,12 @@ class Parsing extends Turbo
 
                 $priceElement = $dom->find($priceSelector, 0);
                 if (!$priceElement) {
-                    $result['error'] = 'Price selector "' . $priceSelector . '" not found on page';
+                    // Check if selector might be invalid format
+                    if (preg_match('/^[a-zA-Z0-9_-]+$/', $priceSelector)) {
+                        $result['error'] = 'Price selector not found. Selector "' . $priceSelector . '" looks like a class name without the dot. Did you mean ".' . $priceSelector . '"?';
+                    } else {
+                        $result['error'] = 'Price selector "' . $priceSelector . '" not found on page. Check the selector format.';
+                    }
                     return $result;
                 }
 

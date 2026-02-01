@@ -50,8 +50,18 @@
                 <label for="selector_price">CSS селектор для цены <span class="required">*</span></label>
                 <input type="text" id="selector_price" name="selector_price" class="form-control" 
                        value="{if $source}{$source->selector_price}{/if}" 
-                       placeholder=".price, span.product-price, div[data-price]" required>
-                <small class="form-text">CSS селектор для поиска элемента с ценой. Примеры: <code>.price</code>, <code>span.product-price</code>, <code>div[data-price]</code></small>
+                       placeholder="Например: .PricesalesPrice или span.PricesalesPrice или .vm-price-value .PricesalesPrice" required>
+                <small class="form-text">
+                    <strong>Формат CSS селектора:</strong>
+                    <ul style="margin: 5px 0; padding-left: 20px;">
+                        <li><code>.classname</code> — элемент с классом (например: <code>.price</code>)</li>
+                        <li><code>#idname</code> — элемент с id (например: <code>#product-price</code>)</li>
+                        <li><code>tag</code> — элемент по названию тега (например: <code>span</code>)</li>
+                        <li><code>tag.classname</code> — тег с классом (например: <code>span.price</code>)</li>
+                        <li><code>.parent .child</code> — вложенные элементы (например: <code>.product .price</code>)</li>
+                    </ul>
+                    <span style="color: #dc3545;">⚠️ Важно: не забудьте точку перед именем класса!</span> Правильно: <code>.PricesalesPrice</code>, а не <code>PricesalesPrice</code>
+                </small>
             </div>
 
             {* Селектор артикула *}
@@ -59,8 +69,11 @@
                 <label for="selector_article">CSS селектор для артикула <span class="required">*</span></label>
                 <input type="text" id="selector_article" name="selector_article" class="form-control" 
                        value="{if $source}{$source->selector_article}{/if}" 
-                       placeholder=".sku, span.article-number" required>
-                <small class="form-text">CSS селектор для поиска элемента с артикулом/SKU товара</small>
+                       placeholder="Например: .product-sku или span.sku или .sku-value" required>
+                <small class="form-text">
+                    CSS селектор для поиска элемента с артикулом/SKU товара.
+                    <br>Примеры: <code>.sku</code>, <code>span.article-number</code>, <code>#product-sku</code>
+                </small>
             </div>
         </fieldset>
 

@@ -82,13 +82,25 @@ class ParsingSourceAdmin extends Turbo
 
         // Сохранить
         $sourceId = $this->request->get('id', 'integer');
-        
+
         if (!empty($sourceId)) {
             // Обновление
-            if ($this->parsing->updateSource($sourceId, $data)) {
+            $updateResult = $this->parsing->updateSource($sourceId, $data);
+            if ($updateResult === true) {
                 return [
                     'success' => true,
                     'message' => 'Источник обновлен успешно'
+                ];
+            } elseif (is_array($updateResult) && isset($updateResult['error'])) {
+                // Validation error with details
+                $errorMessage = $updateResult['error'];
+                if (isset($updateResult['details']['message'])) {
+                    $errorMessage .= ': ' . $updateResult['details']['message'];
+                }
+                return [
+                    'success' => false,
+                    'message' => $errorMessage,
+                    'data' => $data
                 ];
             } else {
                 return [
@@ -100,10 +112,21 @@ class ParsingSourceAdmin extends Turbo
         } else {
             // Создание
             $newId = $this->parsing->createSource($data);
-            if ($newId) {
+            if ($newId && !is_array($newId)) {
                 return [
                     'success' => true,
                     'message' => 'Источник создан успешно'
+                ];
+            } elseif (is_array($newId) && isset($newId['error'])) {
+                // Validation error with details
+                $errorMessage = $newId['error'];
+                if (isset($newId['details']['message'])) {
+                    $errorMessage .= ': ' . $newId['details']['message'];
+                }
+                return [
+                    'success' => false,
+                    'message' => $errorMessage,
+                    'data' => $data
                 ];
             } else {
                 return [
@@ -134,10 +157,22 @@ class ParsingSourceAdmin extends Turbo
         // Селекторы обязательны
         if (empty($data['selector_price'])) {
             $errors[] = 'Селектор цены обязателен';
+        } else {
+            // Validate price selector format
+            $priceValidation = $this->parsing->validateSelectorPublic($data['selector_price']);
+            if (!$priceValidation['valid']) {
+                $errors[] = 'Селектор цены: ' . $priceValidation['message'];
+            }
         }
 
         if (empty($data['selector_article'])) {
             $errors[] = 'Селектор артикула обязателен';
+        } else {
+            // Validate article selector format
+            $articleValidation = $this->parsing->validateSelectorPublic($data['selector_article']);
+            if (!$articleValidation['valid']) {
+                $errors[] = 'Селектор артикула: ' . $articleValidation['message'];
+            }
         }
 
         // Границы цены - проверка на корректность
@@ -149,7 +184,7 @@ class ParsingSourceAdmin extends Turbo
             $errors[] = 'Максимальная граница цены не может быть отрицательной';
         }
 
-        if (!empty($data['price_min_bound']) && !empty($data['price_max_bound']) 
+        if (!empty($data['price_min_bound']) && !empty($data['price_max_bound'])
             && $data['price_min_bound'] > $data['price_max_bound']) {
             $errors[] = 'Минимальная граница не может быть больше максимальной';
         }
