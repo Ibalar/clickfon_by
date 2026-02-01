@@ -151,7 +151,8 @@
                                        title="Редактировать URL">
                                         ✎
                                     </a>
-
+                                    <button type="button"
+                                            class="btn btn-sm btn-info"
                                             onclick="parseItemNow({$item->id})"
                                             title="Переспарсить">
                                         ▶️
