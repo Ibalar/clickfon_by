@@ -520,14 +520,29 @@ class Parsing extends Turbo
                 $parseResult = $this->parseUrl($item->url, $source->selector_price, $source->selector_article);
 
                 if ($parseResult['status'] == 'error') {
-                    // Update item as error
+                    $error_detail = $parseResult['error'];
+                    if (!empty($parseResult['html_snippet'])) {
+                        $error_detail .= ' | HTML snippet: ' . substr($parseResult['html_snippet'], 0, 100);
+                    }
+                    if (!empty($parseResult['http_code'])) {
+                        $error_detail .= ' | HTTP: ' . $parseResult['http_code'];
+                    }
+
                     $this->db->query(
                         "UPDATE __parsing_items SET status = 'error', last_error = ?, last_parsed_at = NOW() WHERE id = ?",
-                        $parseResult['error'],
+                        $error_detail,
                         (int) $item->id
                     );
+
                     $result['errors']++;
                     $result['messages'][] = "Item {$item->article_reference}: " . $parseResult['error'];
+
+                    $this->createLog(
+                        (int) $sourceId,
+                        (int) $item->id,
+                        'parse_error',
+                        'Parse error: ' . $error_detail
+                    );
                     continue;
                 }
 
@@ -676,77 +691,115 @@ class Parsing extends Turbo
             'status' => 'error',
             'price' => null,
             'article' => null,
-            'error' => null
+            'error' => null,
+            'http_code' => null,
+            'html_snippet' => null
         ];
 
         try {
-            // Get random user agent
             $userAgent = $this->userAgents[array_rand($this->userAgents)];
 
-            // Fetch HTML
+            $headers = "User-Agent: {$userAgent}\r\n";
+            $headers .= "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
+            $headers .= "Accept-Language: en-US,en;q=0.5\r\n";
+            $headers .= "Accept-Encoding: gzip, deflate\r\n";
+            $headers .= "Connection: close\r\n";
+            $headers .= "Pragma: no-cache\r\n";
+            $headers .= "Cache-Control: no-cache\r\n";
+
             $context = stream_context_create([
                 'http' => [
                     'method' => 'GET',
-                    'header' => "User-Agent: {$userAgent}\r\n",
-                    'timeout' => $this->urlTimeout
+                    'header' => $headers,
+                    'timeout' => $this->urlTimeout,
+                    'follow_location' => true,
+                    'max_redirects' => 5
                 ]
             ]);
 
             $html = @file_get_contents($url, false, $context);
 
-            if ($html === false) {
-                $result['error'] = 'Failed to fetch URL';
-                return $result;
-            }
+            $http_response_header_val = isset($http_response_header) ? $http_response_header : [];
+            $http_code = 200;
 
-            // Parse HTML
-            $parser = new Sunra\PhpSimple\HtmlDomParser();
-            $dom = $parser->str_get_html($html);
-
-            if (!$dom) {
-                $result['error'] = 'Failed to parse HTML';
-                return $result;
-            }
-
-            // Extract price
-            $priceElement = $dom->find($priceSelector, 0);
-            if (!$priceElement) {
-                $result['error'] = 'Price selector not found';
-                return $result;
-            }
-
-            $priceText = $priceElement->plaintext;
-            if (empty($priceText)) {
-                $result['error'] = 'Price element is empty';
-                return $result;
-            }
-
-            // Parse price - remove all non-numeric except decimal point
-            $price = preg_replace('/[^\d.,]/', '', $priceText);
-            $price = str_replace(',', '.', $price);
-            $price = floatval($price);
-
-            if ($price <= 0) {
-                $result['error'] = 'Invalid price value';
-                return $result;
-            }
-
-            // Extract article
-            $article = null;
-            if ($articleSelector) {
-                $articleElement = $dom->find($articleSelector, 0);
-                if ($articleElement) {
-                    $article = trim($articleElement->plaintext);
+            foreach ($http_response_header_val as $header) {
+                if (preg_match('/^HTTP\/\d\.\d\s+(\d+)/', $header, $matches)) {
+                    $http_code = (int) $matches[1];
+                    break;
                 }
             }
 
-            $dom->clear();
+            $result['http_code'] = $http_code;
 
-            $result['status'] = 'success';
-            $result['price'] = $price;
-            $result['article'] = $article;
+            if ($html === false) {
+                $result['error'] = 'Failed to fetch URL (HTTP ' . $http_code . ')';
+                return $result;
+            }
+
+            if ($http_code >= 400) {
+                $snippet = substr($html, 0, 500);
+                $result['html_snippet'] = $snippet;
+                $result['error'] = 'Server returned HTTP ' . $http_code . '. Response: ' . substr($snippet, 0, 100);
+                return $result;
+            }
+
+            if (strlen($html) < 50) {
+                $result['error'] = 'Received unusually short response: ' . trim(substr($html, 0, 100));
+                return $result;
+            }
+
+            try {
+                $parser = new Sunra\PhpSimple\HtmlDomParser();
+                $dom = $parser->str_get_html($html);
+
+                if (!$dom) {
+                    $snippet = substr($html, 0, 500);
+                    $result['html_snippet'] = $snippet;
+                    $result['error'] = 'Failed to parse HTML. First 100 chars: ' . substr($snippet, 0, 100);
+                    return $result;
+                }
+
+                $priceElement = $dom->find($priceSelector, 0);
+                if (!$priceElement) {
+                    $result['error'] = 'Price selector "' . $priceSelector . '" not found on page';
+                    return $result;
+                }
+
+                $priceText = $priceElement->plaintext;
+                if (empty($priceText)) {
+                    $result['error'] = 'Price element exists but is empty';
+                    return $result;
+                }
+
+                $price = preg_replace('/[^\d.,]/', '', $priceText);
+                $price = str_replace(',', '.', $price);
+                $price = floatval($price);
+
+                if ($price <= 0) {
+                    $result['error'] = 'Invalid price value: ' . $priceText;
+                    return $result;
+                }
+
+                $article = null;
+                if ($articleSelector) {
+                    $articleElement = $dom->find($articleSelector, 0);
+                    if ($articleElement) {
+                        $article = trim($articleElement->plaintext);
+                    }
+                }
+
+                $dom->clear();
+
+                $result['status'] = 'success';
+                $result['price'] = $price;
+                $result['article'] = $article;
+            } catch (Exception $e) {
+                $snippet = substr($html, 0, 200);
+                $result['html_snippet'] = $snippet;
+                $result['error'] = 'Parse error: ' . $e->getMessage() . ' (First 50 chars: ' . substr($snippet, 0, 50) . ')';
+            }
         } catch (Exception $e) {
-            $result['error'] = 'Parse exception: ' . $e->getMessage();
+            $result['error'] = 'Unexpected error: ' . $e->getMessage();
         }
 
         return $result;
@@ -760,7 +813,9 @@ class Parsing extends Turbo
         $result = [
             'status' => 'error',
             'value' => null,
-            'message' => null
+            'message' => null,
+            'http_code' => null,
+            'html_snippet' => null
         ];
 
         if (empty($url) || empty($selector)) {
@@ -776,38 +831,70 @@ class Parsing extends Turbo
         try {
             require_once $this->config->root_dir . '/vendor/autoload.php';
 
-            // Get random user agent
             $userAgent = $this->userAgents[array_rand($this->userAgents)];
 
-            // Fetch HTML
+            $headers = "User-Agent: {$userAgent}\r\n";
+            $headers .= "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
+            $headers .= "Accept-Language: en-US,en;q=0.5\r\n";
+            $headers .= "Accept-Encoding: gzip, deflate\r\n";
+            $headers .= "Connection: close\r\n";
+            $headers .= "Pragma: no-cache\r\n";
+            $headers .= "Cache-Control: no-cache\r\n";
+
             $context = stream_context_create([
                 'http' => [
                     'method' => 'GET',
-                    'header' => "User-Agent: {$userAgent}\r\n",
-                    'timeout' => $this->urlTimeout
+                    'header' => $headers,
+                    'timeout' => $this->urlTimeout,
+                    'follow_location' => true,
+                    'max_redirects' => 5
                 ]
             ]);
 
             $html = @file_get_contents($url, false, $context);
 
+            $http_response_header_val = isset($http_response_header) ? $http_response_header : [];
+            $http_code = 200;
+
+            foreach ($http_response_header_val as $header) {
+                if (preg_match('/^HTTP\/\d\.\d\s+(\d+)/', $header, $matches)) {
+                    $http_code = (int) $matches[1];
+                    break;
+                }
+            }
+
+            $result['http_code'] = $http_code;
+
             if ($html === false) {
-                $result['message'] = 'Failed to fetch URL';
+                $result['message'] = 'Failed to fetch URL (HTTP ' . $http_code . ')';
                 return $result;
             }
 
-            // Parse HTML
+            if ($http_code >= 400) {
+                $snippet = substr($html, 0, 500);
+                $result['html_snippet'] = $snippet;
+                $result['message'] = 'Server returned HTTP ' . $http_code . '. Response: ' . substr($snippet, 0, 100);
+                return $result;
+            }
+
+            if (strlen($html) < 50) {
+                $result['message'] = 'Received unusually short response: ' . trim(substr($html, 0, 100));
+                return $result;
+            }
+
             $parser = new Sunra\PhpSimple\HtmlDomParser();
             $dom = $parser->str_get_html($html);
 
             if (!$dom) {
-                $result['message'] = 'Failed to parse HTML';
+                $snippet = substr($html, 0, 500);
+                $result['html_snippet'] = $snippet;
+                $result['message'] = 'Failed to parse HTML. First 100 chars: ' . substr($snippet, 0, 100);
                 return $result;
             }
 
-            // Find element
             $element = $dom->find($selector, 0);
             if (!$element) {
-                $result['message'] = 'Selector not found';
+                $result['message'] = 'Selector "' . $selector . '" not found on page';
                 return $result;
             }
 
