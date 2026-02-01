@@ -60,6 +60,9 @@ if (!$turbo->managers->access('parsing')) {
                     $parsedPrice = $parseResult['price'];
                     $parsedArticle = $parseResult['article'];
 
+                    // Article verification is optional
+                    // If article selector returned a value and it doesn't match - that's an error
+                    // If article selector returned nothing - that's OK (ignore article)
                     if (!empty($parsedArticle) && $parsedArticle !== $item->article_reference) {
                         $error = "Article mismatch: expected '{$item->article_reference}', got '{$parsedArticle}'";
                         $turbo->db->query(
