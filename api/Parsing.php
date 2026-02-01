@@ -242,28 +242,49 @@ class Parsing extends Turbo
                 continue;
             }
 
-            // Parse line - support multiple delimiters
+            // Parse line - support multiple delimiters with better detection
             $parts = null;
+            $line_original = $line;
+
+            // Detect delimiter
+            $delimiter = null;
             if (strpos($line, ',') !== false) {
-                $parts = explode(',', $line, 2);
+                $delimiter = ',';
             } elseif (strpos($line, ';') !== false) {
-                $parts = explode(';', $line, 2);
+                $delimiter = ';';
             } elseif (strpos($line, '|') !== false) {
-                $parts = explode('|', $line, 2);
+                $delimiter = '|';
             } elseif (strpos($line, "\t") !== false) {
-                $parts = explode("\t", $line, 2);
+                $delimiter = "\t";
             } else {
-                $parts = preg_split('/\s+/', $line, 2);
+                // Fallback: try to find any whitespace followed by http
+                $parts = preg_split('/\s+(?=http)/i', $line, 2);
+                if (count($parts) !== 2) {
+                    $parts = preg_split('/\s+/', $line, 2);
+                }
+                $delimiter = 'whitespace';
             }
+
+            if ($delimiter !== 'whitespace') {
+                $parts = explode($delimiter, $line, 2);
+            }
+
+            // Add debug logging
+            $this->createLog(
+                (int)$sourceId,
+                null,
+                'import_debug',
+                "Line $lineNumber: original='{$line_original}' delimiter='$delimiter' parts_count=" . count($parts)
+            );
 
             if (count($parts) != 2) {
                 $result['failed']++;
-                $result['errors'][] = "Line $lineNumber: Invalid format";
+                $result['errors'][] = "Line $lineNumber: Invalid format (expected 2 parts, got " . count($parts) . ")";
                 continue;
             }
 
-            $article = trim($parts[0]);
-            $url = trim($parts[1]);
+            $article = trim($parts[0], " \t\n\r\0\x0B");
+            $url = trim($parts[1], " \t\n\r\0\x0B");
 
             // Validate
             if (empty($article)) {
@@ -311,6 +332,14 @@ class Parsing extends Turbo
                     );
                     $this->db->query($query);
                     $result['success']++;
+
+                    // Log success detail
+                    $this->createLog(
+                        (int)$sourceId,
+                        null,
+                        'import_success_detail',
+                        "Line $lineNumber: article='$article' url='$url' mode='$mode'"
+                    );
                 } elseif ($mode == 'update') {
                     // Update existing only
                     $query = $this->db->placehold(
@@ -323,6 +352,14 @@ class Parsing extends Turbo
 
                     if ($this->db->affectedRows() > 0) {
                         $result['success']++;
+
+                        // Log success detail
+                        $this->createLog(
+                            (int)$sourceId,
+                            null,
+                            'import_success_detail',
+                            "Line $lineNumber: article='$article' url='$url' mode='$mode'"
+                        );
                     } else {
                         $result['failed']++;
                         $result['errors'][] = "Line $lineNumber: Article '$article' not found for update";
@@ -339,6 +376,14 @@ class Parsing extends Turbo
                     );
                     $this->db->query($query);
                     $result['success']++;
+
+                    // Log success detail
+                    $this->createLog(
+                        (int)$sourceId,
+                        null,
+                        'import_success_detail',
+                        "Line $lineNumber: article='$article' url='$url' mode='$mode'"
+                    );
                 }
             } catch (Exception $e) {
                 $result['failed']++;
