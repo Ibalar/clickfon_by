@@ -13,50 +13,53 @@ class ParsingItemsAdmin extends Turbo
         }
 
         // Получить source_id из параметров
-        $source_id = $this->request->get('source_id', 'integer');
-        if (empty($source_id)) {
-            $this->design->assign('message_error', 'source_not_found');
-            return $this->design->fetch('error.tpl');
+        $sourceId = $this->request->get('source_id', 'integer');
+
+        // Если source_id не указан - показать список источников для выбора
+        if (empty($sourceId)) {
+            $sources = $this->parsing->getSources(['limit' => 100]);
+            $this->design->assign('sources', $sources);
+            $this->design->assign('mode', 'select_source');
+            return $this->design->fetch('parsing_items.tpl');
         }
 
         // Получить source и убедиться что он существует
-        $source = $this->parsing->getSource($source_id);
+        $source = $this->parsing->getSource($sourceId);
         if (empty($source)) {
             $this->design->assign('message_error', 'source_not_found');
             return $this->design->fetch('error.tpl');
         }
 
-        // Получить параметры фильтрации (page, status)
-        $page = max(1, (int)$this->request->get('page', 'integer', 1));
-        $status = $this->request->get('status', 'string');
-        $limit = 20;
+        // Передать source в Smarty
+        $this->design->assign('source', $source);
+        $this->design->assign('mode', 'items_list');
 
-        // Получить items с фильтрацией и пагинацией
-        $filter = ['limit' => $limit, 'offset' => ($page - 1) * $limit];
+        // Получить параметры фильтрации
+        $status = $this->request->get('status', 'string');
+        $page = $this->request->get('page', 'integer', 1);
+        $perPage = 20;
+        $offset = ($page - 1) * $perPage;
+
+        // Получить элементы
+        $filter = ['limit' => $perPage, 'offset' => $offset];
         if (!empty($status)) {
             $filter['status'] = $status;
         }
-        $items = $this->parsing->getItems($source_id, $filter);
 
-        // Получить общий счетчик для пагинации (без лимита)
-        $count_filter = [];
-        if (!empty($status)) {
-            $count_filter['status'] = $status;
-        }
-        $all_items = $this->parsing->getItems($source_id, $count_filter);
-        $total_count = count($all_items);
-        $total_pages = ceil($total_count / $limit);
+        $items = $this->parsing->getItems($sourceId, $filter);
 
-        // Передать в Smarty: items, source, page, total_count, total_pages, current_status
+        // Получить общее количество элементов для пагинации
+        $allItems = $this->parsing->getItems($sourceId, []);
+        $totalItems = count($allItems);
+        $totalPages = ceil($totalItems / $perPage);
+
         $this->design->assign('items', $items);
-        $this->design->assign('source', $source);
-        $this->design->assign('page', $page);
-        $this->design->assign('total_count', $total_count);
-        $this->design->assign('total_pages', $total_pages);
-        $this->design->assign('limit', $limit);
-        $this->design->assign('current_status', $status);
+        $this->design->assign('currentPage', $page);
+        $this->design->assign('totalPages', $totalPages);
+        $this->design->assign('totalItems', $totalItems);
+        $this->design->assign('status_filter', $status);
 
-        // Вернуть шаблон parsing_items.tpl
+        // Вернуть шаблон
         return $this->design->fetch('parsing_items.tpl');
     }
 }
